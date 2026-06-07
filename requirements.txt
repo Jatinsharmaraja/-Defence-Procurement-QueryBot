@@ -8,3 +8,5 @@ sentence-transformers
 pypdf
 tqdm
 einops
+torch
+torchvision
