@@ -167,7 +167,7 @@ def apply_military_grade_ui():
 apply_military_grade_ui()
 
 # ==============================================================================
-# SECTION 4: INTELLIGENT KNOWLEDGE CORE (Lines 451-650)
+# SECTION 4: INTELLIGENT KNOWLEDGE CORE (SMART PATH VERSION)
 # ==============================================================================
 
 class TitanIntelligenceEngine:
@@ -177,12 +177,21 @@ class TitanIntelligenceEngine:
         self.key = api_key
         # High-Resolution Local Embedder
         self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        self.vault_path = "." # Files are in root directory on GitHub
+        
+        # AUTO-DETECT PATH: Checks both root and folder
+        if os.path.exists("permanent_vault/index.faiss"):
+            self.vault_path = "permanent_vault"
+        else:
+            self.vault_path = "." 
+            
         self.vault = self._load_vault()
 
     def _load_vault(self):
         """Loads and verifies the integrity of the neural knowledge base."""
-        if os.path.exists("index.faiss"):
+        # Check if the specific index file exists in the detected path
+        target_file = os.path.join(self.vault_path, "index.faiss")
+        
+        if os.path.exists(target_file):
             try:
                 return FAISS.load_local(
                     self.vault_path, 
@@ -195,14 +204,10 @@ class TitanIntelligenceEngine:
         return None
 
     def synthesize_analytical_brief(self, user_query):
-        """
-        Executes a 360-degree synthesis (Policy, Process, Power, Plan, Peril, Proceed).
-        This method uses robust token extraction to prevent attribute errors.
-        """
         if not self.vault:
-            return "ERROR: Neural Architecture Offline."
+            return "ERROR: Neural Architecture Offline. Vault files not found."
 
-        # 1. CONTEXTUAL MINING (K=12 for deep synthesis)
+        # 1. CONTEXTUAL MINING
         retriever = self.vault.as_retriever(search_kwargs={"k": 12})
         docs = retriever.invoke(user_query)
         
@@ -213,7 +218,6 @@ class TitanIntelligenceEngine:
             context_data += f"\n[DOC LAYER {i+1} | ORIGIN: {src}]\n{d.page_content}\n"
 
         # 3. ADVANCED SYSTEM PROMPT
-        # Forces Llama 3.1 70B to behave as a Senior Strategic Advisor
         system_directive = f"""
         YOU ARE THE 'DEFENCE PROCUREMENT QUERY BOT'.
         STRICT MISSION: Execute a high-fidelity strategic analysis on the user query.
@@ -232,16 +236,18 @@ class TitanIntelligenceEngine:
         CITATIONS: You MUST explicitly mention the specific manual by name for every rule cited.
         """
 
-        # 4. CLOUD INFERENCE CONFIGURATION
+        # 4. CLOUD INFERENCE
         llm = ChatGroq(
             groq_api_key=self.key, 
             model_name="llama-3.1-70b-versatile",
-            temperature=0, # Deterministic Factuality
+            temperature=0,
             max_tokens=2048
         )
         
         return llm.stream(system_directive + "\n\nUser Question: " + user_query)
-
+               
+     
+        
 # ==============================================================================
 # SECTION 5: COMMAND SIDEBAR HUD (Lines 651-780)
 # ==============================================================================
