@@ -1,8 +1,6 @@
 # ==============================================================================
-# PROJECT: DEFENCE PROCUREMENT QUERY BOT (v11.0 - STABLE TITAN)
-# INSTITUTION: National Academy of Defence Production (NADP), Nagpur
-# ENGINE: Groq LPU + Llama 3.1 70B (High-Stability Cloud Build)
-# SECURITY: Local-Vault RAG + Secure Cloud Inference
+# PROJECT: DEFENCE PROCUREMENT QUERY BOT (v12.0 - ULTRA-STABLE)
+# VERSION: 12.0.2 | SPEED OPTIMIZED FOR CLOUD DEPLOYMENT
 # ==============================================================================
 
 import streamlit as st
@@ -15,263 +13,150 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 
 # ==============================================================================
-# SECTION 1: SYSTEM IDENTITY & FAIL-SAFE SECRETS (Lines 30-110)
+# SECTION 1: GLOBAL CONFIG & FAIL-SAFES
 # ==============================================================================
 
 PROJECT_NAME = "Defence Procurement Query Bot"
-SYSTEM_CODE = "DPQB-V11-STABLE"
-ACADEMY = "NADP Nagpur"
+SYSTEM_CODE = "DPQB-V12-LIGHT"
 
-# Audit logging initialization
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("TITAN_STABLE")
-
-# Secure API Key Handling
-try:
-    if "GROQ_API_KEY" in st.secrets:
-        GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
-    else:
-        # Emergency backup for direct testing
-        GROQ_API_KEY = "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"
-except Exception:
+# API Key handling
+if "GROQ_API_KEY" in st.secrets:
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+else:
     GROQ_API_KEY = "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"
 
-# ==============================================================================
-# SECTION 2: ROBUST TELEMETRY UTILITIES (Lines 111-220)
-# ==============================================================================
-
+# Telemetry function
 def push_telemetry(msg, status="INFO"):
-    """Maintains a real-time system event log in the user session."""
     if "session_telemetry" not in st.session_state:
         st.session_state.session_telemetry = []
-    
-    timestamp = datetime.now().strftime('%H:%M:%S')
-    log_entry = f"[{timestamp}] {status}: {msg}"
-    st.session_state.session_telemetry.append(log_entry)
-    
-    # Keep only most recent logs for performance
-    if len(st.session_state.session_telemetry) > 20:
+    ts = datetime.now().strftime('%H:%M:%S')
+    st.session_state.session_telemetry.append(f"[{ts}] {status}: {msg}")
+    if len(st.session_state.session_telemetry) > 15:
         st.session_state.session_telemetry.pop(0)
 
-def get_formatted_logs():
-    return "\n".join(st.session_state.session_telemetry)
-
 # ==============================================================================
-# SECTION 3: TACTICAL HUD DESIGN (CSS) (Lines 221-450)
+# SECTION 2: UI DESIGN
 # ==============================================================================
 
 st.set_page_config(page_title=PROJECT_NAME, page_icon="🛡️", layout="wide")
 
-def apply_military_ui():
-    st.markdown("""
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&family=Orbitron:wght@400;900&display=swap');
-        
-        :root {
-            --gold: #d4af37;
-            --navy-deep: #020c1b;
-            --tactical-blue: #0a192f;
-            --cyan-glow: #64ffda;
-            --text-silver: #ccd6f6;
-        }
-
-        .stApp { background-color: var(--navy-deep); color: var(--text-silver); font-family: 'JetBrains Mono', monospace; }
-        
-        [data-testid="stSidebar"] {
-            background-color: #010a15;
-            border-right: 2px solid var(--gold);
-            box-shadow: 10px 0px 30px rgba(0,0,0,0.5);
-        }
-
-        .tactical-header {
-            text-align: center; padding: 40px; background: #0a192f;
-            border-bottom: 3px double var(--gold); margin-bottom: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-        .tactical-header h1 { color: var(--gold); font-family: 'Orbitron', sans-serif; letter-spacing: 8px; text-transform: uppercase; }
-
-        .analysis-card {
-            background-color: #112240; border: 1px solid var(--cyan-glow);
-            padding: 25px; border-radius: 4px; border-left: 8px solid var(--gold);
-            margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
-
-        .telemetry-log {
-            background-color: #000; color: #39ff14; padding: 15px;
-            font-size: 0.82rem; height: 250px; overflow-y: auto;
-            border: 1px solid #333; font-family: 'Courier New', monospace;
-        }
-
-        .metric-unit { background: #001219; border: 1px solid #1f3a5a; padding: 15px; text-align: center; border-radius: 3px; }
-        .stChatInputContainer { border: 1px solid var(--gold) !important; }
-        </style>
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&family=Orbitron:wght@400;900&display=swap');
+    :root { --gold: #d4af37; --navy: #020c1b; --cyan: #64ffda; --text: #ccd6f6; }
+    .stApp { background-color: var(--navy); color: var(--text); font-family: 'JetBrains Mono', monospace; }
+    [data-testid="stSidebar"] { background-color: #010a15; border-right: 2px solid var(--gold); }
+    .tactical-header { text-align: center; padding: 30px; background: #0a192f; border-bottom: 2px solid var(--gold); margin-bottom: 30px; }
+    .tactical-header h1 { color: var(--gold); font-family: 'Orbitron', sans-serif; letter-spacing: 5px; text-transform: uppercase; }
+    .telemetry-log { background-color: #000; color: #39ff14; padding: 15px; font-size: 0.8rem; height: 220px; overflow-y: auto; border: 1px solid #333; }
+    .metric-card { background: #001219; border: 1px solid #1f3a5a; padding: 10px; text-align: center; border-radius: 4px; }
+    .stChatInputContainer { border: 1px solid var(--gold) !important; }
+    </style>
     """, unsafe_allow_html=True)
 
-apply_military_ui()
-
 # ==============================================================================
-# SECTION 4: KNOWLEDGE CORE (Lines 451-680)
+# SECTION 3: KNOWLEDGE BRAIN (CLOUD OPTIMIZED)
 # ==============================================================================
 
-class TitanIntelligenceEngine:
-    """Orchestrates Optimized Strategic Retrieval and Inference."""
-    
-    def __init__(self, api_key):
-        self.key = api_key
-        # Memory-optimized Embedding model for Cloud
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+@st.cache_resource
+def load_optimized_engine():
+    """Loads the vault once and keeps it in memory for instant responses"""
+    try:
+        # Step 1: Detect Path
+        vault_path = "permanent_vault" if os.path.exists("permanent_vault/index.faiss") else "."
         
-        # Enhanced Path Detection
-        if os.path.exists("permanent_vault/index.faiss"):
-            self.vault_path = "permanent_vault"
-        elif os.path.exists("index.faiss"):
-            self.vault_path = "."
-        else:
-            self.vault_path = None
-            
-        self.vault = self._load_vault()
-
-    def _load_vault(self):
-        if not self.vault_path: return None
-        try:
-            return FAISS.load_local(
-                self.vault_path, 
-                self.embeddings, 
-                allow_dangerous_deserialization=True
-            )
-        except Exception as e:
-            logger.error(f"VAULT_ERR: {e}")
-            return None
-
-    def synthesize_analysis(self, user_query):
-        if not self.vault: return "ERROR: Vault files missing in GitHub."
-
-        # RETRIEVAL (K=8 optimized for speed and token limits)
-        retriever = self.vault.as_retriever(search_kwargs={"k": 8})
-        docs = retriever.invoke(user_query)
+        # Step 2: Initialize Embeddings (Light version)
+        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         
-        context_data = ""
-        for i, d in enumerate(docs):
-            src = d.metadata.get('source', 'Classified Manual')
-            context_data += f"\n[LAYER {i+1} | ORIGIN: {src}]\n{d.page_content}\n"
+        # Step 3: Load FAISS
+        return FAISS.load_local(vault_path, embeddings, allow_dangerous_deserialization=True)
+    except Exception as e:
+        st.error(f"Vault Loading Failure: {e}")
+        return None
 
-        # SYSTEM PROMPT (Pointed Analytical Approach)
-        directive = f"""
-        YOU ARE THE 'DEFENCE PROCUREMENT QUERY BOT'.
-        MISSION: Execute a 360-degree consultation on procurement.
-        
-        KNOWLEDGE EVIDENCE BASE:
-        {context_data}
-
-        PROTOCOL:
-        1. 📋 SITUATIONAL ANALYSIS: Determine project category.
-        2. ⚖️ PROCEDURAL PATHWAY: Steps from Manuals & Handbooks.
-        3. 💰 FINANCIAL AUTHORITY: Identify CFA via DFPDS 2026.
-        4. ✅ FINAL ACTION PLAN: 3 actionable steps.
-
-        CITATIONS: Cite manuals for every rule.
-        """
-
-        llm = ChatGroq(
-            groq_api_key=self.key, 
-            model_name="llama-3.1-70b-versatile",
-            temperature=0,
-            max_tokens=1500
-        )
-        
-        return llm.stream(directive + "\n\nUser Question: " + user_query)
+# Global engine instance
+VAULT = load_optimized_engine()
 
 # ==============================================================================
-# SECTION 5: COMMAND SIDEBAR HUD (Lines 681-800)
+# SECTION 4: SIDEBAR HUD
 # ==============================================================================
-
-if not GROQ_API_KEY:
-    st.error("FATAL: Security Key Missing.")
-    st.stop()
-
-# Cache engine to prevent repeated loading
-if "engine" not in st.session_state:
-    st.session_state.engine = TitanIntelligenceEngine(GROQ_API_KEY)
 
 with st.sidebar:
     st.markdown(f"<h2 style='color:var(--gold);'>🛡️ COMMAND HUD</h2>", unsafe_allow_html=True)
     st.markdown("---")
     
-    h_col1, h_col2 = st.columns(2)
-    with h_col1:
-        st.markdown("<div class='metric-unit'><p style='color:gold;font-size:0.7rem;'>CORPUS</p><p style='font-size:1.4rem;font-weight:bold;'>1.6k+p</p></div>", unsafe_allow_html=True)
-    with h_col2:
-        st.markdown("<div class='metric-unit'><p style='color:gold;font-size:0.7rem;'>ENGINE</p><p style='font-size:1.4rem;font-weight:bold;'>GROQ</p></div>", unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    c1.markdown("<div class='metric-card'><p style='color:grey;font-size:0.6rem;'>CORPUS</p><p style='font-size:1.1rem;font-weight:bold;'>1.6k+p</p></div>", unsafe_allow_html=True)
+    c2.markdown("<div class='metric-card'><p style='color:grey;font-size:0.6rem;'>SPEED</p><p style='font-size:1.1rem;font-weight:bold;'>TURBO</p></div>", unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown("### 🖥️ PROCESS MONITOR LOG")
-    log_box = st.empty()
+    st.markdown("### 🖥️ PROCESS MONITOR")
+    log_area = st.empty()
     
     if "session_telemetry" not in st.session_state:
-        push_telemetry("AEGIS Titan Stable Core Online.")
+        push_telemetry("AEGIS Optimized Core Online.")
     
-    log_box.markdown(f"<div class='telemetry-log'>{get_formatted_logs()}</div>", unsafe_allow_html=True)
+    log_area.markdown(f"<div class='telemetry-log'>{chr(10).join(st.session_state.session_telemetry)}</div>", unsafe_allow_html=True)
 
-    if st.button("🔴 PURGE SESSION"):
+    if st.button("Purge Memory"):
         st.session_state.messages = []
         st.session_state.session_telemetry = []
         st.rerun()
 
 # ==============================================================================
-# SECTION 6: ANALYTICAL DASHBOARD EXECUTION (Lines 801-950)
+# SECTION 5: MASTER CHAT EXECUTION
 # ==============================================================================
 
 st.markdown(f"<div class='tactical-header'><h1>🛡️ {PROJECT_NAME}</h1></div>", unsafe_allow_html=True)
-st.caption(f"NADP Nagpur Strategic Dashboard | Build: {SYSTEM_CODE}")
 
-if not st.session_state.engine.vault:
-    st.error("SYSTEM ERROR: Permanent Vault files (index.faiss) not detected. Check GitHub.")
-    st.stop()
+if VAULT:
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]): st.markdown(message["content"])
-
-if user_input := st.chat_input("Enter procurement query..."):
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"): st.markdown(user_input)
-
-    push_telemetry(f"Input: {user_input[:35]}...")
-
-    with st.chat_message("assistant"):
-        with st.status("🛸 Accessing Defence Knowledge Layers...", expanded=False):
-            st.write("Synthesizing context...")
-            time.sleep(0.3)
+    if user_input := st.chat_input("Enter procurement query..."):
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"): st.markdown(user_input)
         
-        output_surface = st.empty()
-        full_analysis = ""
-        
-        try:
-            # ROBUST STREAM PARSING to prevent 'str' object attribute error
-            for part in st.session_state.engine.synthesize_analysis(user_input):
-                # FIXED ATTRIBUTE LOGIC
-                if hasattr(part, 'content'):
-                    token = part.content
-                elif isinstance(part, str):
-                    token = part
-                else:
-                    token = getattr(part, 'text', str(part))
-                
-                full_analysis += token
-                output_surface.markdown(full_analysis + "▌")
+        push_telemetry(f"Query: {user_input[:25]}...")
+
+        with st.chat_message("assistant"):
+            status_box = st.status("🛸 Searching Defence Layers...", expanded=False)
             
-            output_surface.markdown(full_analysis)
-            push_telemetry("Report Delivered.")
-            st.session_state.messages.append({"role": "assistant", "content": full_analysis})
-        
-        except Exception as e:
-            st.error(f"ENGINE TIMEOUT: {str(e)}")
-            push_telemetry(f"ERROR: {str(e)}", status="FAIL")
+            # Step 1: Retrieval
+            docs = VAULT.as_retriever(search_kwargs={"k": 6}).invoke(user_input)
+            context = "\n".join([f"[{d.metadata.get('source','Manual')}] {d.page_content}" for d in docs])
+            status_box.update(label="STRATEGIC SYNTHESIS READY", state="complete")
 
-# Update visual logs
-log_box.markdown(f"<div class='telemetry-log'>{get_formatted_logs()}</div>", unsafe_allow_html=True)
+            # Step 2: Groq Call (Using Faster 8B model for reliability)
+            llm = ChatGroq(
+                groq_api_key=GROQ_API_KEY, 
+                model_name="llama3-8b-8192", # CHANGED to 8B for 10x faster response
+                temperature=0
+            )
 
-st.markdown("---")
-st.markdown("<p style='text-align: center; color: #555; font-size: 0.75rem;'>Proprietary Tool | NADP Nagpur | Capstone 2025-26</p>", unsafe_allow_html=True)
+            prompt = f"CONTEXT:\n{context}\n\nQUERY: {user_input}\n\nStructure: 1. ANALYSIS | 2. PROCEDURE | 3. AUTHORITY | 4. SOLUTION. Cite manuals."
+            
+            output_ui = st.empty()
+            full_res = ""
+            
+            try:
+                # Step 3: Stream with Fail-Safe Parser
+                for part in llm.stream(prompt):
+                    # Handle both object and string responses
+                    token = part.content if hasattr(part, 'content') else str(part)
+                    full_res += token
+                    output_ui.markdown(full_res + "▌")
+                
+                output_ui.markdown(full_res)
+                st.session_state.messages.append({"role": "assistant", "content": full_res})
+                push_telemetry("Report Delivered.")
+            except Exception as e:
+                st.error("Engine saturation. Retrying...")
+                push_telemetry(f"FAIL: {str(e)}", "ERROR")
+else:
+    st.error("CRITICAL: Vault missing. Ensure 'index.faiss' is in GitHub root.")
+
+# Visual log update
+log_area.markdown(f"<div class='telemetry-log'>{chr(10).join(st.session_state.session_telemetry)}</div>", unsafe_allow_html=True)
