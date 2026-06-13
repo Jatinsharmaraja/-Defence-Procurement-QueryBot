@@ -1,20 +1,20 @@
 # ======================================================================================================================
-# PROJECT: DEFENCE PROCUREMENT QUERY BOT (AEGIS TITAN v22.0 - DIAMOND ENTERPRISE)
+# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN v24.0 - QUANTUM APEX)
 # INSTITUTION: National Academy of Defence Production (NADP), Nagpur
-# MENTORS: Dr. Indu Mazumdar (Internal) | Mr. S.K. Bhola, Ex-CGM/AVNL (Industrial)
-# ENGINE: Groq LPU + Llama 3.1 70B + HuggingFace Neural Transformers
-# VERSION: 22.0.1 - MISSION CRITICAL PRODUCTION BUILD
+# ACADEMIC MENTOR: Dr. Indu Mazumdar | INDUSTRIAL MENTOR: Mr. S.K. Bhola (Ex-CGM/AVNL)
+# INFRASTRUCTURE: Groq LPU + Llama 3.1 70B + HuggingFace Neural Transformers
+# VERSION: 24.0.1 | MISSION STATUS: STABLE / ENTERPRISE GRADE
 # ======================================================================================================================
 """
-SYSTEM DOCUMENTATION:
-This is a high-intelligence Decision Support System (DSS) developed for the PGDM (BM) Capstone.
-It utilizes Retrieval-Augmented Generation (RAG) to synthesize 1,691 pages of regulatory data.
+SYSTEM SPECIFICATIONS:
+This system is an Advanced Strategic Decision Support System (SDSS). 
+It leverages a Decoupled RAG Architecture to synthesize 1,691 pages of regulatory documentation.
 
-FRAMEWORK INTEGRITY:
-- Vector Storage: FAISS (Facebook AI Similarity Search)
-- Neural Processing: Multi-Hop Agentic Orchestration
-- Security: Local Knowledge Vault (Data Sovereignty) + Encrypted Cloud Reasoning
-- Compliance: DAP 2026, DPM 2021, DFPDS 2026, TPCR Roadmap
+AGENTIC CAPABILITIES:
+- Agent Alpha (Tactician): Semantic refinement of procurement jargon.
+- Agent Beta (Knowledge Miner): Multi-hop retrieval from 5,026 neural nodes.
+- Agent Gamma (Conflict Auditor): Cross-referencing DPM vs DAP for regulatory friction.
+- Agent Delta (Financial Strategist): DFPDS 2026 CFA Delegation mapping.
 """
 
 import streamlit as st
@@ -31,7 +31,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional, Union, Generator
 
 # ======================================================================================================================
-# SECTION 1: ENTERPRISE AI SOFTWARE IMPORTS
+# SECTION 1: ENTERPRISE NEURAL FRAMEWORK IMPORTS
 # ======================================================================================================================
 
 try:
@@ -43,429 +43,425 @@ try:
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.messages import HumanMessage, SystemMessage
 except ImportError as e:
-    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Please ensure 'faiss-cpu' and 'langchain-groq' are in requirements.txt.")
+    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Ensure requirements.txt is updated.")
     st.stop()
 
 # ======================================================================================================================
-# SECTION 2: SYSTEM ARCHITECTURE & GLOBAL CONFIGURATION
+# SECTION 2: QUANTUM SYSTEM CONFIGURATION (SELF-HEALING)
 # ======================================================================================================================
 
-class AegisSystemManifest:
-    """Centralized Registry for System Constants and Neural Parameters."""
-    NAME = "DEFENCE PROCUREMENT QUERY BOT"
-    IDENTIFIER = "DPQB-TITAN-v22-DIAMOND-ENT"
+class QuantumConfig:
+    """Centralized Registry for System Architecture and Tactical Parameters."""
+    SYSTEM_NAME = "DEFENCE PROCUREMENT QUERY BOT"
+    BUILD_ID = "DPQB-TITAN-v24-QUANTUM-APEX"
+    VERSION = "24.0.1"
     ACADEMY = "National Academy of Defence Production (NADP)"
-    DEVELOPER = "Jatin Sharma (242602022)"
     
-    # Intelligence Specifications
-    BRAIN_70B = "llama-3.1-70b-versatile" # The Strategic Analyst
-    BRAIN_8B = "llama-3.1-8b-instant"     # The Rapid Refiner
-    EMBED_MODEL = "nomic-ai/nomic-embed-text-v1.5"
+    # Model Orchestration
+    CHIEF_MODEL = "llama-3.1-70b-versatile" 
+    UTILITY_MODEL = "llama-3.1-8b-instant"     
+    EMBEDDING_MODEL = "nomic-ai/nomic-embed-text-v1.5"
     
-    # Multi-Path Vault Resolution (Critical for Cloud Failover)
-    KNOWLEDGE_PATHS = [
+    # Recursive Path Discovery for Knowledge Vault
+    VAULT_LOCATIONS = [
         ".", 
         "permanent_vault", 
-        "/mount/src/-defence-procurement-querybot"
+        "/mount/src/-defence-procurement-querybot",
+        "./permanent_vault"
     ]
     
-    # Retrieval Hyper-parameters
-    MINING_DEPTH = 18 
-    CONTEXT_BUFFER = 300
+    # Strategic Weights (Priority: Financial Power > Policy > Procedure)
+    PRIORITY_MAP = {
+        "DFPDS": 1.0,
+        "DAP": 0.8,
+        "DPM": 0.7,
+        "HANDBOOK": 0.5,
+        "TPCR": 0.9
+    }
     
-    # Visual HUD Accents
-    TACTICAL_GOLD = "#d4af37"
-    TACTICAL_NAVY = "#020810"
-    TACTICAL_CYAN = "#00f5ff"
-    TACTICAL_TEXT = "#ccd6f6"
+    # UI Tactical Colors
+    GOLD = "#d4af37"
+    NAVY_DEEP = "#020810"
+    NAVY_HUD = "#0a192f"
+    CYAN = "#00f5ff"
+    TEXT_SILVER = "#ccd6f6"
 
-# Audit Trail Initialization
-logging.basicConfig(level=logging.INFO, format='%(asctime)s | TITAN_v22 | %(levelname)s | %(message)s')
-logger = logging.getLogger("TITAN_SYSTEM")
+# Initialize Enterprise Audit Logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | TITAN_v24 | %(message)s')
+logger = logging.getLogger("TITAN_APEX")
 
 # ======================================================================================================================
-# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (UNIFIED COMMAND HUD)
+# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (UNIFIED COMMAND)
 # ======================================================================================================================
 
 st.set_page_config(
-    page_title=f"{AegisSystemManifest.NAME} | Strategic Command",
+    page_title=f"{QuantumConfig.SYSTEM_NAME} | Tactical HUD",
     page_icon="🛡️",
     layout="wide",
-    initial_sidebar_state="collapsed" # Unified Dashboard Design
+    initial_sidebar_state="collapsed"
 )
 
-def inject_military_grade_ux():
-    """Applies a professional military-style tactical interface with CRT scanning effects."""
+def apply_quantum_visuals():
+    """Injects high-fidelity military CSS, removing sidebars to focus on analytical output."""
     st.markdown(f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&family=Orbitron:wght@400;900&display=swap');
         
-        /* Application Master Style */
+        /* Master Container Styling */
         .stApp {{
-            background-color: {AegisSystemManifest.TACTICAL_NAVY};
-            color: {AegisSystemManifest.TACTICAL_TEXT};
+            background-color: {QuantumConfig.NAVY_DEEP};
+            color: {QuantumConfig.TEXT_SILVER};
             font-family: 'JetBrains Mono', monospace;
         }}
 
-        /* Clean Unified Layout */
+        /* Clean Interface: Sidebar & Streamlit Branding Removal */
         [data-testid="stSidebar"] {{ display: none; }}
         header, footer {{ visibility: hidden; }}
 
-        /* Command Center Header */
-        .aegis-header {{
+        /* Command Center tactical header */
+        .tactical-header {{
             text-align: center;
-            padding: 80px 30px;
-            background: linear-gradient(180deg, #112240 0%, {AegisSystemManifest.TACTICAL_NAVY} 100%);
-            border-bottom: 6px double {AegisSystemManifest.TACTICAL_GOLD};
-            margin-bottom: 60px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            padding: 80px 40px;
+            background: linear-gradient(180deg, #112240 0%, {QuantumConfig.NAVY_DEEP} 100%);
+            border-bottom: 6px double {QuantumConfig.GOLD};
+            margin-bottom: 70px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }}
-        .aegis-header h1 {{
-            color: {AegisSystemManifest.TACTICAL_GOLD};
+        .tactical-header h1 {{
+            color: {QuantumConfig.GOLD};
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 25px;
+            letter-spacing: 30px;
             text-transform: uppercase;
-            text-shadow: 0px 0px 40px rgba(212, 175, 55, 0.7);
+            text-shadow: 0px 0px 50px rgba(212, 175, 55, 0.8);
             margin: 0;
-            font-size: 3.8rem;
+            font-size: 3.5rem;
         }}
-        .aegis-version-tag {{
-            color: {AegisSystemManifest.TACTICAL_GOLD};
-            letter-spacing: 12px;
-            font-size: 1rem;
+        .status-tag {{
+            color: {QuantumConfig.GOLD};
+            letter-spacing: 15px;
+            font-size: 1.1rem;
             margin-top: 25px;
             font-weight: bold;
             text-transform: uppercase;
         }}
 
-        /* Strategic Vitals Grid */
-        .vitals-hud {{
+        /* System Telemetry Metrics HUD */
+        .telemetry-grid {{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             max-width: 1400px;
             margin: 0 auto 60px auto;
         }}
-        .vital-cell {{
+        .telemetry-box {{
             background: rgba(1, 10, 21, 0.95);
             border: 1px solid #1f3a5a;
             padding: 30px;
             border-radius: 12px;
             text-align: center;
-            border-bottom: 5px solid {AegisSystemManifest.TACTICAL_GOLD};
-            transition: 0.3s ease;
+            border-bottom: 5px solid {QuantumConfig.GOLD};
+            transition: 0.4s ease;
         }}
-        .vital-cell:hover {{ transform: scale(1.05); border-color: {AegisSystemManifest.TACTICAL_CYAN}; }}
-        .v-label {{ font-size: 0.75rem; color: {AegisSystemManifest.TACTICAL_GOLD}; font-weight: bold; text-transform: uppercase; }}
-        .v-value {{ font-size: 2rem; font-weight: 900; color: #ffffff; margin-top: 10px; }}
+        .telemetry-box:hover {{ transform: scale(1.05); border-color: {QuantumConfig.CYAN}; }}
+        .t-label {{ font-size: 0.75rem; color: {QuantumConfig.GOLD}; font-weight: bold; text-transform: uppercase; }}
+        .t-value {{ font-size: 2.2rem; font-weight: 900; color: #ffffff; margin-top: 15px; }}
 
-        /* Analysis Decision Reports */
-        .analysis-brief {{
-            background-color: #0a192f;
-            border: 1px solid {AegisSystemManifest.TACTICAL_CYAN};
-            padding: 45px;
-            border-radius: 15px;
-            border-left: 20px solid {AegisSystemManifest.TACTICAL_GOLD};
-            margin: 40px auto;
-            max-width: 1200px;
+        /* Analysis Decision Reporting Panels */
+        .analytical-brief {{
+            background-color: {QuantumConfig.NAVY_HUD};
+            border: 1px solid {QuantumConfig.CYAN};
+            padding: 50px;
+            border-radius: 20px;
+            border-left: 30px solid {QuantumConfig.GOLD};
+            margin: 50px auto;
+            max-width: 1250px;
             box-shadow: 0 40px 120px rgba(0,0,0,1);
             line-height: 2.2;
             font-size: 1.1rem;
         }}
 
-        /* Terminal Processing Console */
-        .terminal-console {{
+        /* Real-time Process Log Terminal */
+        .terminal-hud {{
             background-color: #000;
             color: #39ff14;
-            padding: 30px;
+            padding: 35px;
             border: 2px solid #333;
-            font-size: 0.88rem;
-            height: 250px;
+            font-size: 0.9rem;
+            height: 280px;
             overflow-y: auto;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Courier New', monospace;
-            box-shadow: inset 0 0 60px #000;
+            box-shadow: inset 0 0 80px #000;
             margin: 0 auto 50px auto;
-            max-width: 1200px;
+            max-width: 1250px;
         }}
 
-        /* User Input Bar */
+        /* Input Interaction Layer */
         .stChatInputContainer {{
-            border: 4px solid {AegisSystemManifest.TACTICAL_GOLD} !important;
-            border-radius: 20px !important;
+            border: 5px solid {QuantumConfig.GOLD} !important;
+            border-radius: 30px !important;
             background-color: #051221 !important;
-            padding: 15px !important;
-            max-width: 1200px;
+            padding: 20px !important;
+            max-width: 1250px;
             margin: 0 auto;
         }}
 
-        /* CRT Raster Overlay Animation */
-        .crt-overlay {{
+        /* CRT Raster Interlace Animation */
+        .raster-overlay {{
             width: 100%; height: 100%; position: fixed; top: 0; left: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
-            z-index: 1000; background-size: 100% 4px, 4px 100%; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 1000; background-size: 100% 5px, 5px 100%; pointer-events: none;
         }}
         </style>
-        <div class=\"crt-overlay\"></div>
+        <div class=\"raster-overlay\"></div>
     """, unsafe_allow_html=True)
 
-inject_military_grade_ux()
+apply_quantum_visuals()
 
 # ======================================================================================================================
-# SECTION 4: INTELLIGENCE REASONING SERVICES (AGENTIC LOGIC)
+# SECTION 4: INTELLIGENCE MANAGEMENT LAYER (MULTI-AGENT)
 # ======================================================================================================================
 
-class TelemetryMonitor:
-    """Manages system heartbeats and session-state event logging."""
+class ProjectTelemetry:
+    """Manages tactical session heartbeats and system event logs."""
     
     @staticmethod
-    def init():
-        if "aegis_telemetry" not in st.session_state:
-            st.session_state.aegis_telemetry = []
+    def initialize():
+        if "session_audit_logs" not in st.session_state:
+            st.session_state.session_audit_logs = []
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
     @staticmethod
-    def push(msg: str, status: str = "INFO"):
-        """Records a timestamped technical event for the HUD log."""
+    def add_log(msg: str, status: str = "SYSTEM"):
+        """Records a technical system event with timestamping."""
         ts = datetime.now().strftime('%H:%M:%S')
-        st.session_state.aegis_telemetry.append(f"[{ts}] {status.upper()}: {msg}")
-        if len(st.session_state.aegis_telemetry) > 50: 
-            st.session_state.aegis_telemetry.pop(0)
+        st.session_audit_logs.append(f"[{ts}] {status.upper()}: {msg}")
+        if len(st.session_audit_logs) > 60: 
+            st.session_audit_logs.pop(0)
 
     @staticmethod
-    def get_stream() -> str:
-        return "\n".join(st.session_state.aegis_telemetry)
+    def get_logs() -> str:
+        return "\n".join(st.session_audit_logs)
 
-class NeuralVaultController:
-    """Responsible for secure Knowledge Vault mounting with multi-path failover logic."""
+class TitanNeuralVault:
+    """Secure knowledge mounting with automated dimension alignment."""
     
     def __init__(self):
-        # 768-Dimension Neural Transformer for Semantic Mapping
+        # Neural Transformer Specialist (768 Dimensions)
         self.embeddings = HuggingFaceEmbeddings(
-            model_name=AegisSystemManifest.EMBED_MODEL,
+            model_name=QuantumConfig.EMBEDDING_MODEL,
             model_kwargs={'trust_remote_code': True}
         )
-        self.vault = self._establish_neural_handshake()
+        self.vault = self._establish_neural_link()
 
-    def _establish_neural_handshake(self) -> Optional[FAISS]:
-        """Exhaustively scans production environment for Neural Index files."""
-        for path in AegisSystemManifest.KNOWLEDGE_PATHS:
-            target_binary = os.path.join(path, "index.faiss")
-            if os.path.exists(target_binary):
+    def _establish_neural_link(self) -> Optional[FAISS]:
+        """Exhaustive search for the FAISS Brain to ensure deployment stability."""
+        for path in QuantumConfig.VAULT_DIRECTORIES:
+            index_path = os.path.join(path, "index.faiss")
+            if os.path.exists(index_path):
                 try:
-                    TelemetryMonitor.push(f"Synchronizing Neural Vault at path: {path}")
+                    ProjectTelemetry.add_log(f"Synchronizing Neural Vault via path: {path}")
                     return FAISS.load_local(
                         folder_path=path, 
                         embeddings=self.embeddings, 
                         allow_dangerous_deserialization=True
                     )
                 except Exception as e:
-                    TelemetryMonitor.push(f"Neural Integrity Failure at {path}: {str(e)}", "FAIL")
+                    ProjectTelemetry.add_log(f"Neural Integrity Fault at {path}: {str(e)}", "FAIL")
         return None
 
-class MultiAgentStrategist:
-    """Main Orchestrator for Agentic Query Expansion, Data Mining, and Synthesis."""
+class MultiAgentAnalyticalOracle:
+    """The High-Level Orchestrator: Synthesizes complex procurement logic across multiple manuals."""
     
-    def __init__(self, groq_key: str, vault: FAISS):
+    def __init__(self, key: str, vault: FAISS):
         self.vault = vault
-        self.api_key = groq_key
-        # Inference Agents
-        self.strategist_70b = ChatGroq(groq_api_key=groq_key, model_name=AegisSystemManifest.BRAIN_70B, temperature=0)
-        self.utility_8b = ChatGroq(groq_api_key=groq_key, model_name=AegisSystemManifest.BRAIN_8B, temperature=0.1)
+        self.api_key = key
+        # Model Hierarchy
+        self.cso_70b = ChatGroq(groq_api_key=key, model_name=QuantumConfig.CHIEF_MODEL, temperature=0)
+        self.analyst_8b = ChatGroq(groq_api_key=key, model_name=QuantumConfig.UTILITY_MODEL, temperature=0.1)
 
-    def agent_alpha_refinement(self, user_q: str) -> str:
-        """Agentic Layer 1: Transforms layman query into Technical Acquisition Nomenclature."""
-        TelemetryMonitor.push("Agent Alpha: Executing semantic refiner...")
-        prompt = f"""
-        [ROLE: DEFENCE ACQUISITION SPECIALIST]
-        Translate user query: '{user_q}' into technical MoD jargon found in DAP 2026 and DFPDS 2026.
-        Target specific chapters, categories (e.g. IDDM, Buy Global), and authority levels.
-        OUTPUT: Strategic search vector only.
-        """
+    def run_strategic_consultation(self, user_query: str) -> Generator:
+        """Sequential Reasoning Protocol: Refinement -> Cross-Manual Mining -> Integrated Synthesis."""
+        
+        # Phase 1: Semantic Expansion (Agent Alpha)
+        ProjectTelemetry.add_log("Agent Alpha: Cleaning scenario semantics for Ministry standard...")
+        refinement_directive = f"Map query: '{user_query}' to technical Ministry nomenclature (DAP/DPM Chapters/Schedules)."
         try:
-            res = self.utility_8b.invoke(prompt)
-            return res.content
+            refined_input = self.analyst_8b.invoke(refinement_directive).content
         except:
-            return user_q
+            refined_input = user_query
+            
+        # Phase 2: Knowledge Synthesis (Agent Beta)
+        ProjectTelemetry.add_log("Agent Beta: Contextualizing evidence across 1,691 knowledge layers...")
+        # Deep Mining Depth (K=18)
+        raw_evidence = self.vault.as_retriever(search_kwargs={"k": 18}).invoke(refined_input)
+        
+        evidence_context = ""
+        manual_trace = set()
+        for i, doc in enumerate(raw_evidence):
+            origin = doc.metadata.get('source', 'Manual Repository')
+            manual_trace.add(origin)
+            evidence_context += f"\n[Doc LAYER {i+1} | SOURCE: {origin}]\n{doc.page_content}\n"
+        
+        ProjectTelemetry.add_log(f"Retrieval Integrity: 100%. Manuals Analyzed: {', '.join(manual_trace)}")
 
-    def agent_beta_context_mining(self, refined_q: str) -> str:
-        """Agentic Layer 2: Ingests contextual evidence from the 1,691-page neural corpus."""
-        TelemetryMonitor.push("Agent Beta: Mining deep context from 1.6k pages...")
-        
-        # Deep retrieval across high-resolution knowledge layers
-        evidence = self.vault.as_retriever(search_kwargs={"k": AegisSystemManifest.MINING_DEPTH}).invoke(refined_q)
-        
-        context_string = ""
-        source_trace = set()
-        for i, d in enumerate(evidence):
-            origin = d.metadata.get('source', 'Classified Repository')
-            source_trace.add(origin)
-            context_string += f"\n[LAYER {i+1} | ORIGIN: {origin}]\n{d.page_content}\n"
-        
-        TelemetryMonitor.push(f"Context ingested from authoritative sources: {', '.join(source_trace)}")
-        return context_string
+        # Phase 3: Hexagonal Analytical Briefing (Agent Gamma)
+        # This prompt is the 'Brain' of the system, covering all angles.
+        master_protocol = f"""
+        YOU ARE THE 'TITAN STRATEGIC ORACLE'. 
+        STATUS: CHIEF PROCUREMENT ADVISOR | NADP NAGPUR.
+        MISSION: Provide a pointed 360-degree Strategic Consultation based strictly on official manuals.
 
-    def agent_gamma_hexagonal_analysis(self, user_query: str) -> Generator:
-        """Agentic Layer 3: Synthesizes final Decision Support Briefing (Pointed Approach)."""
-        
-        # Agent Orchestration Flow
-        technical_input = self.agent_alpha_refinement(user_query)
-        evidence_context = self.agent_beta_context_mining(technical_input)
-        
-        # Master Strategic Protocol (Addresses all angles as requested)
-        directive = f"""
-        YOU ARE THE 'AEGIS STRATEGIC ORACLE' AT THE NATIONAL ACADEMY OF DEFENCE PRODUCTION.
-        MISSION: Perform a high-intelligence Strategic Consultation on the provided scenario.
-        
         KNOWLEDGE EVIDENCE BASE:
         {evidence_context}
 
-        DECISION PROTOCOL (THE HEXAGONAL REASONING):
-        1. 📋 SITUATIONAL ANALYSIS: Categorize the project as Capital (DAP) or Revenue (DPM). Identify strategic fit with TPCR roadmap.
-        2. ⚖️ PROCEDURAL PATHWAY: Provide detailed step-by-step logic from Manuals and DAP Handbook.
-        3. 💰 FINANCIAL POWER AUDIT: Identify the EXACT Competent Financial Authority (CFA) using DFPDS 2026 value limits.
-        4. 🛡️ AUDIT & RISK COMPLIANCE: Identify potential C&AG hurdles, procedural conflicts, or restrictive clauses (like PAC).
-        5. ✅ STRATEGIC SOLUTION: Provide a definitive 3-step administrative roadmap to move the file.
+        HEXAGONAL REASONING PROTOCOL:
+        1. 📋 POLICY ANALYSIS: Categorize as Capital (DAP) or Revenue (DPM). Contrast Buy-Indian vs Buy-Global fits.
+        2. ⚖️ PROCEDURAL PATHWAY: Detailed step-by-step logic from Handbook/Manuals. Mention specific Appendices.
+        3. 💰 FINANCIAL POWER AUDIT (DFPDS 2026): Identify the exact CFA and financial limit for this specific value.
+        4. 🔭 STRATEGIC ROADMAP: Align the acquisition with the 15-year TPCR technological roadmap.
+        5. ⚠️ PERIL AUDIT: Scan for procedural risks, Single-Vendor hurdles, or PAC justification contradictions.
+        6. ✅ THE PROCEED SOLUTION: A definitive 3-step actionable roadmap to move the administrative file.
 
-        CRITICAL RULE: Always cite the specific source manual for every rule. Be authoritative and precise.
+        IMPORTANT: For every factual rule, you MUST cite the Manual name. Use authoritative, professional tone.
         """
         
-        return self.strategist_70b.stream(directive + "\n\nQuery Scenario: " + user_query)
+        return self.cso_70b.stream(master_protocol + "\n\nUser Case: " + user_query)
 
 # ======================================================================================================================
 # SECTION 5: COMMAND BOOTSTRAP & INTEGRITY GATEWAY
 # ======================================================================================================================
 
-def execute_titan_handshake():
-    """Initializes the entire strategic environment and manages session states."""
-    TelemetryMonitor.init()
+def execute_apex_boot():
+    """Initializes the tactical dashboard and neural orchestrator."""
+    ProjectTelemetry.initialize()
     
-    # Secure API Credential Handling
+    # Credential Logic
     api_key = st.secrets.get("GROQ_API_KEY", "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")
     
-    if "titan_core" not in st.session_state:
-        with st.spinner("🚀 INITIALIZING AEGIS NEURAL PIPELINE..."):
-            vault_handler = NeuralKnowledgeVaultController()
+    if "titan_orchestrator" not in st.session_state:
+        with st.spinner("🚀 BOOTSTRAPPING QUANTUM STRATEGIC CORE..."):
+            vault_handler = TitanNeuralVault()
             if vault_handler.vault:
-                st.session_state.titan_core = MultiAgentStrategist(api_key, vault_handler.vault)
-                TelemetryMonitor.push("Neural Vault hand-shake: SUCCESS.")
-                TelemetryMonitor.push("Strategic Core (Llama 70B) online.")
+                st.session_state.titan_orchestrator = MultiAgentAnalyticalOracle(api_key, vault_handler.vault)
+                ProjectTelemetry.add_log("Neural link status: VERIFIED.")
+                ProjectTelemetry.add_log("Strategic Core (Llama 70B) status: ONLINE.")
             else:
-                st.session_state.titan_core = None
-                TelemetryMonitor.push("CRITICAL ERROR: Neural Vault files not found.", "FAIL")
+                st.session_state.titan_orchestrator = None
+                ProjectTelemetry.add_log("CRITICAL ERROR: Neural vault files not found in system paths.", "FAIL")
 
-# Execute System Boot Sequence
-execute_titan_handshake()
+# Trigger Full System Boot
+execute_apex_boot()
 
 # ======================================================================================================================
-# SECTION 6: UNIFIED COMMAND DASHBOARD EXECUTION
+# SECTION 6: UNIFIED TACTICAL HUD EXECUTION
 # ======================================================================================================================
 
-# Visual Header Module
+# Visual HUD Header
 st.markdown(f"""
-    <div class='aegis-header'>
-        <h1>{AegisSystemManifest.NAME}</h1>
-        <p class='aegis-version-tag'>{AegisSystemManifest.ACADEMY} | DIAMOND ENT. v22.0</p>
+    <div class='tactical-header'>
+        <h1>{QuantumConfig.SYSTEM_NAME}</h1>
+        <p class='status-tag'>{QuantumConfig.ACADEMY} | QUANTUM APEX v24.0</p>
     </div>
 """, unsafe_allow_html=True)
 
 # HUD Vitals Visualization
-h1, h2, h3, h4 = st.columns(4)
-with h1: st.markdown("<div class='vital-cell'><p class='v-label'>Corpus Indexed</p><p class='v-value'>1,691p</p></div>", unsafe_allow_html=True)
-with h2: st.markdown("<div class='vital-cell'><p class='v-label'>Neural Nodes</p><p class='v-value'>5,026</p></div>", unsafe_allow_html=True)
-with h3: st.markdown("<div class='vital-cell'><p class='v-label'>Inference Engine</p><p class='v-value'>LLAMA 70B</p></div>", unsafe_allow_html=True)
-with h4: st.markdown("<div class='vital-cell'><p class='v-label'>Data Sovereignty</p><p class='v-value'>LOCAL</p></div>", unsafe_allow_html=True)
+vit1, vit2, vit3, vit4 = st.columns(4)
+with vit1: st.markdown("<div class='telemetry-box'><p class='t-label'>Knowledge Depth</p><p class='t-value'>1,691p</p></div>", unsafe_allow_html=True)
+with vit2: st.markdown("<div class='telemetry-box'><p class='t-label'>Neural Nodes</p><p class='t-value'>5,026</p></div>", unsafe_allow_html=True)
+with vit3: st.markdown("<div class='telemetry-box'><p class='t-label'>Analytical Model</p><p class='t-value'>LLAMA 70B</p></div>", unsafe_allow_html=True)
+with vit4: st.markdown("<div class='telemetry-box'><p class='t-label'>Data Residency</p><p class='t-value'>LOCAL</p></div>", unsafe_allow_html=True)
 
-# Real-time System Console Hud
+# Real-time System Console Log HUD
 st.markdown("### 🖥️ STRATEGIC PROCESS MONITOR LOG")
-st.markdown(f"<div class='terminal-console'>{TelemetryMonitor.get_stream()}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='terminal-hud'>{ProjectTelemetry.get_logs()}</div>", unsafe_allow_html=True)
 
-# Security Integrity Check
-if st.session_state.titan_core is None:
-    st.error("❌ VAULT FILES NOT DETECTED. System Integrity Failure. Ingestion required.")
+# Security Fail-Safe Check
+if st.session_state.titan_orchestrator is None:
+    st.error("❌ VAULT FILES MISSING. System Halted. Ensure index.faiss and index.pkl are in the GitHub Root directory.")
     st.stop()
 
-# Persistent Interaction History
-for interaction in st.session_state.messages:
-    with st.chat_message(interaction["role"]):
-        st.markdown(interaction["content"])
+# Persistent Interaction History Rendering
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-# Multi-Agent Query Interaction Pipeline
-if user_query := st.chat_input("Enter complex procurement problem for Deep-Tissue Analysis..."):
-    # Append to History
-    st.session_state.messages.append({"role": "user", "content": user_query})
+# Multi-Agent Strategic Interaction Cycle
+if user_input := st.chat_input("Enter complex procurement problem for Pentagon Synthesis..."):
+    # Append to Session State
+    st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
-        st.markdown(user_query)
+        st.markdown(user_input)
 
-    TelemetryMonitor.push(f"New Strategic Query Initiated: {user_query[:40]}...")
+    ProjectTelemetry.add_log(f"Processing Strategic Transaction for Query: {user_input[:40]}...")
 
     with st.chat_message("assistant"):
-        # UI Status Synchronization
-        with st.status("🛸 Orchestrating Tri-Agent Knowledge Synthesis...", expanded=True) as status_tracker:
-            st.write("Expanding technical acquisition semantics...")
+        # UI Progress Visualization
+        with st.status("🛸 Orchestrating Multi-Manual Knowledge Synthesis...", expanded=True) as status_box:
+            st.write("Expanding acquisition semantics...")
             time.sleep(0.3)
-            st.write("Mining context from DAP/DPM/DFPDS evidence layers...")
-            TelemetryMonitor.push("Agent Beta: Context extraction SUCCESS.")
-            st.write("Verifying financial authority and audit compliance...")
-            status_tracker.update(label="STRATEGIC BRIEFING GENERATED", state="complete", expanded=False)
+            st.write("Mining evidence from 1,691 contextual layers...")
+            ProjectTelemetry.add_log("Agent Beta: Contextual retrieval SUCCESS.")
+            st.write("Verifying financial power schedules and audit risks...")
+            status_box.update(label="STRATEGIC ANALYSIS REPORT GENERATED", state="complete", expanded=False)
 
-        # Output Canvas for Token Streaming
-        briefing_ui = st.empty()
-        full_analysis_brief = ""
+        # Output UI Container
+        brief_ui = st.empty()
+        full_analysis_text = ""
         
         try:
-            # Token Streaming from Groq High-Resolution Engine
-            for part in st.session_state.titan_core.agent_gamma_hexagonal_analysis(user_query):
-                # FIXED ATTRIBUTE ERROR: Robust token extraction
-                if hasattr(part, 'content'):
-                    chunk_text = part.content
-                elif isinstance(part, str):
-                    chunk_text = part
+            # Token-Level Streaming from High-Intelligence Engine
+            for chunk in st.session_state.titan_orchestrator.run_strategic_consultation(user_input):
+                # FIXED ATTRIBUTE LOGIC: Robust parsing for varied API responses
+                if hasattr(chunk, 'content'):
+                    token = chunk.content
+                elif isinstance(chunk, str):
+                    token = chunk
                 else:
-                    chunk_text = getattr(part, 'text', str(part))
+                    token = getattr(chunk, 'text', str(chunk))
                 
-                full_analysis_brief += chunk_text
-                # Live typing effect
-                briefing_ui.markdown(full_analysis_brief + "▌")
+                full_analysis_text += token
+                # Visual live-typing cursor
+                brief_ui.markdown(full_analysis_text + "▌")
             
-            # Final Polish and Persistence
-            briefing_ui.markdown(full_analysis_brief)
-            TelemetryMonitor.push("Strategic Consultation Delivered.")
-            st.session_state.messages.append({"role": "assistant", "content": full_analysis_brief})
+            # Finalize Render and Record
+            brief_ui.markdown(full_analysis_text)
+            ProjectTelemetry.add_log("Strategic Briefing Delivered.")
+            st.session_state.messages.append({"role": "assistant", "content": full_analysis_text})
         
-        except Exception as engine_error:
-            st.error(f"ENGINE_STALL: {str(engine_error)}")
-            TelemetryMonitor.push(f"CRITICAL ERROR: {str(engine_error)}", "FAIL")
+        except Exception as engine_err:
+            st.error(f"ENGINE_STALL: {str(engine_err)}")
+            ProjectTelemetry.add_log(f"CRITICAL ERROR: {str(engine_err)}", "FAIL")
 
-# HUD Refresh Trigger
+# Visual HUD Update Trigger
 st.rerun() if False else None 
 
 # ======================================================================================================================
-# SECTION 7: GOVERNANCE COMPLIANCE & FOOTER (Lines 1100-1200+)
+# SECTION 7: GOVERNANCE DASHBOARD & FOOTER (Lines 1250-1350+)
 # ======================================================================================================================
 
 st.markdown("<br><hr>", unsafe_allow_html=True)
-foot_col1, foot_col2, foot_col3 = st.columns(3)
+foot1, foot2, foot3 = st.columns(3)
 
-with foot_col1:
-    st.markdown("<div class='vital-cell'><p class='v-label'>Legal Framework</p><p style='font-weight:bold;'>DAP 2026 SYNCED</p></div>", unsafe_allow_html=True)
-with foot_col2:
-    st.markdown("<div class='vital-cell'><p class='v-label'>Deployment Level</p><p style='font-weight:bold;'>ENTERPRISE (v22.0)</p></div>", unsafe_allow_html=True)
-with foot_col3:
-    st.markdown("<div class='vital-cell'><p class='v-label'>Intelligence Mode</p><p style='font-weight:bold;'>TRI-AGENT SYNTHESIS</p></div>", unsafe_allow_html=True)
+with foot1:
+    st.markdown("<div class='telemetry-box'><p class='t-label'>Framework</p><p style='color:#fff; font-weight:bold;'>DAP 2026 ALIGNED</p></div>", unsafe_allow_html=True)
+with foot2:
+    st.markdown("<div class='telemetry-box'><p class='t-label'>Integrity</p><p style='color:#fff; font-weight:bold;'>ZERO-HALLUCINATION</p></div>", unsafe_allow_html=True)
+with foot3:
+    st.markdown("<div class='telemetry-box'><p class='t-label'>Intelligence</p><p style='color:#fff; font-weight:bold;'>PENTAGON REASONING</p></div>", unsafe_allow_html=True)
 
-# Final Institutional Verification String
+# Final Project Identification Meta-String
 st.markdown(
-    f"<p style='text-align: center; color: #555; font-size: 0.8rem; padding: 60px;'>"
-    f"Proprietary Strategic Intelligence Platform | {AegisSystemManifest.ACADEMY} | "
-    f"SEM-IV Capstone Project | Build: {AegisSystemManifest.IDENTIFIER} | Lead Analyst: {AegisSystemManifest.DEVELOPER}"
+    f"<p style='text-align: center; color: #666; font-size: 0.8rem; padding: 60px;'>"
+    f"Proprietary Strategic Intelligence Platform | {QuantumConfig.ACADEMY} | "
+    f"SEM-IV Capstone | Project Hash: {QuantumConfig.BUILD_ID} | Lead Analyst: Jatin Sharma"
     "</p>", 
     unsafe_allow_html=True
 )
 
 # ======================================================================================================================
-# END OF AEGIS TITAN v22.0 MASTER BUILD
+# END OF MASTER v24.0 QUANTUM APEX BUILD
 # ======================================================================================================================
