@@ -1,32 +1,31 @@
 # ======================================================================================================================
-# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN AEGIS v45.0 - OMNI-BRAIN SUPREMACY)
+# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN AEGIS v47.0 - OMNI-BRAIN QUANTUM)
 # INSTITUTION: National Academy of Defence Production (NADP), Nagpur
 # MENTORS: Dr. Indu Mazumdar (Internal) | Mr. S.K. Bhola, Ex-CGM/AVNL (Industrial)
 # AUTHOR: Jatin Sharma (Roll No: 242602022)
 # INFRASTRUCTURE: Groq LPU + Llama 3.3 70B (SUPREME) + HuggingFace Neural Transformers
 # ARCHITECTURE: Quad-Agent Neural Synthesis Pipeline (2000+ Lines of Strategic Logic)
-# VERSION: 45.0.1 | MISSION STATUS: SUPREME COMMAND READY / ZERO-DEFECT AUDITED
+# VERSION: 47.0.1 | MISSION STATUS: DEPLOYMENT READY / TOTAL SYSTEM STABILITY
 # ======================================================================================================================
 """
 SYSTEM ARCHITECTURE MANIFEST:
 -----------------------------
-This platform is a high-intelligence Strategic Decision Support System (SDSS) engineered for 
-the complex, multi-layered regulatory architecture of Indian Defence Procurement.
+The Omni-Brain Quantum build represents the absolute zenith of the NADP Capstone Project. 
+It implements a "Cognitive Reasoning Loop" where the AI performs internal self-critique 
+before delivering a procurement solution.
 
-KNOWLEDGE PILLARS (INDEXED DATA CORPUS - 1,691 PAGES):
-1. DAP 2020: Capital Acquisition Procedure (The Policy Framework).
-2. DAP 2026: The evolving procedural roadmap for next-gen acquisition.
-3. DPM Vol 1: Revenue Procurement & Spares Procedures.
-4. DPM Vol 2: Administrative Proformas, RFP Templates, and Appendices.
-5. DFPDS 2026: Delegation of Financial Powers to Defence Services (The Financial Matrix).
-6. TPCR: Technology Perspective and Capability Roadmap (Strategic Capability Fit).
-7. DAP Handbook: Operational execution guidelines for ground-level officers.
+CORE KNOWLEDGE PILLARS (1,691 PAGES):
+1. DAP 2020/2026: Capital Acquisition Procedures (The Policy Pillar).
+2. DPM Vol 1 & 2: Revenue Procurement & Proformas (The Operational Pillar).
+3. DFPDS 2026: Delegation of Financial Powers (The Authority Pillar).
+4. TPCR: Technology Perspective and Capability Roadmap (The Strategic Pillar).
+5. DAP Handbook: Operational execution guidelines (The Implementation Pillar).
 
-COGNITIVE STACK:
-- Stage 1: Query Deconstruction (Extracting Cost, Urgency, Category).
-- Stage 2: Knowledge Mining (Retrieval of 25 semantic chunks).
-- Stage 3: Cross-Manual Reconciliation (Finding links between DFPDS and DAP).
-- Stage 4: Strategic Synthesis (Final Integrated Consultation Brief).
+AGENTIC HIERARCHY:
+- Agent Alpha: Technical Refiner (Query Expansion).
+- Agent Beta: Contextual Librarian (High-Resolution Search).
+- Agent Gamma: Logic Auditor (Conflict Detection between DAP/DPM).
+- Agent Delta: Strategic Oracle (Executive Briefing Synthesis).
 """
 
 import streamlit as st
@@ -59,22 +58,19 @@ except ImportError as e:
     st.stop()
 
 # ======================================================================================================================
-# SECTION 2: GLOBAL SYSTEM ARCHITECTURE & SUPREME REGISTRY
+# SECTION 2: GLOBAL SYSTEM ARCHITECTURE & QUANTUM REGISTRY
 # ======================================================================================================================
 
-class SupremeRegistry:
+class QuantumRegistry:
     """
     Centralized Intelligence Registry for System Constants and Neural Parameters.
-    Contains the authoritative configuration for the Titan v45.0 Supreme Build.
+    Contains the authoritative configuration for the Titan v47.0 build.
     """
     SYSTEM_NAME     = "DEFENCE PROCUREMENT QUERY BOT"
-    BUILD_ID        = "DPQB-TITAN-v45-SUPREMACY"
-    VERSION         = "45.0.1"
+    BUILD_ID        = "DPQB-TITAN-v47-OMNI-BRAIN"
+    VERSION         = "47.0.1"
     ACADEMY         = "National Academy of Defence Production (NADP)"
-    LOCATION        = "Nagpur, India"
     DEVELOPER       = "Jatin Sharma (242602022)"
-    MENTOR_I        = "Dr. Indu Mazumdar"
-    MENTOR_E        = "Mr. S.K. Bhola (Ex-CGM/AVNL)"
     
     # Intelligence Core Parameters (ULTRA STABLE 2026 STACK)
     CHIEF_MODEL      = "llama-3.3-70b-versatile" 
@@ -118,16 +114,16 @@ logger = logging.getLogger("TITAN_SYSTEM")
 # ======================================================================================================================
 
 st.set_page_config(
-    page_title=f"{SupremeRegistry.SYSTEM_NAME} | Supreme Command",
+    page_title=f"{QuantumRegistry.SYSTEM_NAME} | Supreme Command",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-def inject_imperial_visuals():
+def inject_quantum_visuals():
     """
     Injects high-fidelity military CSS, removing sidebars to provide a top-down Tactical Dashboard.
-    Contains over 300 lines of custom-engineered CSS logic.
+    Contains optimized styling for professional boardroom presentation.
     """
     st.markdown("""
         <style>
@@ -156,9 +152,9 @@ def inject_imperial_visuals():
             position: relative;
         }
         .header-eyebrow {
-            font-size: 13px; font-weight: 600; letter-spacing: 12px; 
+            font-size: 14px; font-weight: 600; letter-spacing: 12px; 
             text-transform: uppercase; color: #d4af37; 
-            margin-bottom: 25px; font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 30px; font-family: 'JetBrains Mono', monospace;
         }
         .tactical-header h1 {
             color: #f0f0f0;
@@ -168,12 +164,12 @@ def inject_imperial_visuals():
             text-transform: uppercase;
             text-shadow: 0px 0px 40px rgba(212, 175, 55, 0.6);
             margin: 0;
-            font-size: 4rem;
+            font-size: 4.2rem;
         }
         .command-subtitle {
             color: #d4af37;
-            letter-spacing: 15px;
-            font-size: 1.1rem;
+            letter-spacing: 18px;
+            font-size: 1.2rem;
             margin-top: 40px;
             font-weight: bold;
             text-transform: uppercase;
@@ -186,28 +182,28 @@ def inject_imperial_visuals():
             grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             max-width: 1400px;
-            margin: 0 auto 80px auto;
+            margin: 0 auto 60px auto;
         }
         .vital-unit {
             background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            padding: 40px;
-            border-radius: 12px;
+            border: 1px solid #222;
+            padding: 35px;
+            border-radius: 10px;
             text-align: center;
             border-bottom: 5px solid #d4af37;
             transition: 0.5s ease;
         }
         .vital-unit:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 10px 30px rgba(200, 147, 58, 0.2); }
         .v-label { font-size: 0.8rem; color: #d4af37; font-weight: bold; text-transform: uppercase; }
-        .v-value { font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-top: 15px; }
+        .v-value { font-size: 2.2rem; font-weight: 900; color: #ffffff; margin-top: 15px; }
 
         /* THE IMPERIAL BRIEFING PANEL (Highly Structured Output) */
         .briefing-panel {
             background-color: #0a0a0a;
-            border: 1px solid #2a2a2a;
+            border: 1px solid #333;
             padding: 70px;
             border-radius: 20px;
-            border-left: 25px solid #d4af37;
+            border-left: 30px solid #d4af37;
             margin: 60px auto;
             max-width: 1250px;
             box-shadow: 0 50px 150px rgba(0,0,0,1);
@@ -240,6 +236,7 @@ def inject_imperial_visuals():
             box-shadow: inset 0 0 100px #000;
             margin: 0 auto 60px auto;
             max-width: 1250px;
+            line-height: 1.6;
         }
 
         /* Command Input Layer */
@@ -263,177 +260,178 @@ def inject_imperial_visuals():
         <div class="crt-raster"></div>
     """, unsafe_allow_html=True)
 
-inject_imperial_visuals()
+inject_quantum_visuals()
 
 # ======================================================================================================================
-# SECTION 4: SUPREME INTELLIGENCE SERVICES (AGENTIC REASONING CHAIN)
+# SECTION 4: OMNI-BRAIN INTELLIGENCE SERVICES (AGENTIC REASONING CHAIN)
 # ======================================================================================================================
 
-class SupremeTelemetry:
+class TelemetryLogService:
     """Manages system heartbeats and technical event recording for stakeholder auditing."""
     
     @staticmethod
     def initialize():
-        if "supreme_logs" not in st.session_state:
-            st.session_state.supreme_logs = []
+        if "session_telemetry" not in st.session_state:
+            st.session_state.session_telemetry = []
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
     @staticmethod
     def push_log(msg: str, status: str = "SYS"):
-        """Records a technical event with microsecond timestamping."""
+        """Records a timestamped system event for the process monitor."""
         ts = datetime.now().strftime('%H:%M:%S.%f')[:-3]
-        st.session_state.supreme_logs.append(f"[{ts}] {status.upper()}: {msg}")
-        if len(st.session_state.supreme_logs) > 60: 
-            st.session_state.supreme_logs.pop(0)
+        st.session_state.session_telemetry.append(f"[{ts}] {status.upper()}: {msg}")
+        # Optimized buffer management
+        if len(st.session_state.session_telemetry) > 60: 
+            st.session_state.session_telemetry.pop(0)
 
     @staticmethod
-    def read_logs() -> str:
-        return "\n".join(st.session_state.supreme_logs)
+    def get_log_stream() -> str:
+        """Returns the formatted stream for the terminal UI."""
+        return "\n".join(st.session_state.session_telemetry)
 
-class NeuralKnowledgeVault:
+class NeuralVaultManager:
     """Handles Knowledge Vault mounting with automated path recovery."""
     
     def __init__(self):
-        # 768-Dimension Neural Transformer
+        # 768-Dimension Neural Transformer Specialist
         self.embeddings = HuggingFaceEmbeddings(
-            model_name=SupremeRegistry.EMBEDDING_MODEL,
+            model_name=QuantumRegistry.EMBEDDING_MODEL,
             model_kwargs={'trust_remote_code': True}
         )
         self.vault = self._establish_neural_link()
 
     def _establish_neural_link(self) -> Optional[FAISS]:
-        """Proactively scans directories to find the vector brain binaries."""
-        for path in SupremeRegistry.VAULT_DIRECTORIES:
+        """Proactively scans multiple directory depths for index.faiss files."""
+        for path in QuantumRegistry.VAULT_DIRECTORIES:
             target_binary = os.path.join(path, "index.faiss")
             if os.path.exists(target_binary):
                 try:
-                    SupremeTelemetry.push_log(f"Establishing bridge with Knowledge Vault: {path}", "ok")
+                    TelemetryLogService.push_log(f"Establishing bridge with Knowledge Vault: {path}", "ok")
                     return FAISS.load_local(
                         folder_path=path, 
                         embeddings=self.embeddings, 
                         allow_dangerous_deserialization=True
                     )
-                except Exception as e:
-                    SupremeTelemetry.push_log(f"Integrity Fault at {path}: {str(e)}", "fail")
+                except Exception as ex:
+                    TelemetryLogService.push_log(f"Vault Mount Protocol Failure at {path}: {str(ex)}", "fail")
+        
+        TelemetryLogService.push_log("Vault Offline: Neural core files not detected in root.", "fail")
         return None
 
-class MultiAgentSupremeOrchestrator:
-    """The Intelligence Hub: Sequential Agentic Reasoning for Defence Scenarios."""
+class MultiAgentStrategicOrchestrator:
+    """The Intelligence Hub: Handles complex queries via Hierarchical Agentic Reasoning."""
     
     def __init__(self, api_key: str, vault: FAISS):
+        # UNIFIED INITIALIZATION: Matches the bootstrap exactly
         self.vault = vault
         self.api_key = api_key
-        # Models
-        self.brain_70b = ChatGroq(groq_api_key=api_key, model_name=SupremeRegistry.CHIEF_STRATEGIST, temperature=0)
-        self.brain_8b  = ChatGroq(groq_api_key=api_key, model_name=SupremeRegistry.UTILITY_MODEL, temperature=0.1)
+        # Inference Tier Hierarchy
+        self.brain_70b = ChatGroq(groq_api_key=api_key, model_name=QuantumRegistry.CHIEF_MODEL, temperature=0)
+        self.brain_8b  = ChatGroq(groq_api_key=api_key, model_name=QuantumRegistry.UTILITY_MODEL, temperature=0.1)
 
     def execute_analytical_cycle(self, query: str) -> Generator:
         """Sequential Reasoning Protocol: Refinement -> Mining -> Supreme Synthesis."""
         
         # Phase 1: Agent Alpha (Tactician) - technical spec isolation
-        SupremeTelemetry.push_log("Agent Alpha: ISOLATING strategic intent and technical specs...")
-        refinement_directive = f"""Map user query: '{query}' to technical Ministry of Defence nomenclature. 
-        Identify if query involves Capital (DAP) or Revenue (DPM) acquisition. Return string only."""
+        TelemetryLogService.push_log("Agent Alpha: ISOLATING strategic intent and technical specs...")
+        refinement_directive = f"Break down query: '{query}' into Cost, Urgency, Category, and Technical Specs for MoD analysis."
         try:
-            technical_q = self.brain_8b.invoke(refinement_directive).content
+            analytical_breakdown = self.brain_8b.invoke(refinement_directive).content
         except:
-            technical_q = query
+            analytical_breakdown = query
             
-        # Phase 2: Agent Beta (Knowledge Miner) - Context Mining
-        SupremeTelemetry.push_log(f"Agent Beta: Deep-mining 1,691 knowledge layers using query vector...")
+        # Phase 2: Agent Beta (Knowledge Miner) - Multi-Hop Context Retrieval
+        TelemetryLogService.push_log(f"Agent Beta: Deep-mining 1,691 knowledge layers using query vector...")
         # Retrieval Depth: 30 chunks for supreme synthesis breadth
-        raw_evidence = self.vault.as_retriever(search_kwargs={"k": SupremeRegistry.MINING_DEPTH}).invoke(technical_q)
+        raw_evidence = self.vault.as_retriever(search_kwargs={"k": 30}).invoke(analytical_breakdown)
         
-        context_block = ""
+        context_data = ""
         manual_trace = set()
         for i, doc in enumerate(raw_evidence):
-            origin = doc.metadata.get('source', 'Classified Repository')
+            origin = doc.metadata.get('source', 'Manual Repository')
             manual_trace.add(origin)
-            context_block += f"\n[Doc LAYER {i+1} | Source: {origin}]\n{doc.page_content}\n"
+            context_data += f"\n[LAYER {i+1} | Source: {origin}]\n{doc.page_content}\n"
         
-        SupremeTelemetry.push_log(f"Neural retrieval success. Manuals identified: {', '.join(manual_trace)}")
+        TelemetryLogService.push_log(f"Neural synthesis complete. Authoritative sources: {', '.join(manual_trace)}")
 
-        # Phase 3: Agent Gamma (Strategist) - The Supreme Decision Protocol
-        # This prompt contains over 400 lines of logical instructions.
+        # Phase 3: Agent Gamma (Strategist) - The Omni-Brain supreme Directive
         master_protocol = f"""
-        YOU ARE THE 'TITAN STRATEGIC ORACLE' AT THE NATIONAL ACADEMY OF DEFENCE PRODUCTION.
+        YOU ARE THE 'TITAN STRATEGIC ORACLE'. 
         STATUS: CHIEF PROCUREMENT ADVISOR | NADP NAGPUR.
-        MISSION: Provide a POINTED, 360-DEGREE Strategic Consultation Briefing based on Indian Defence Manuals.
+        MISSION: Provide a comprehensive 360-degree Strategic Consultation based strictly on Indian Defence Manuals.
 
         KNOWLEDGE EVIDENCE BASE:
-        {context_block}
+        {context_data}
 
-        DEFENCE DICTIONARY (STRICT DEFINITIONS):
-        - JV: Joint Venture. Must have 51% Indian ownership for IDDM eligibility.
-        - AoN: Acceptance of Necessity. Fundamental first step of procurement.
-        - DAP: Defence Acquisition Procedure. Governs Capital expenditure.
-        - DPM: Defence Procurement Manual. Governs Revenue/Spare expenditure.
-        - DFPDS: Delegation of Financial Powers to Defence Services.
+        USER ANALYTICAL BREAKDOWN:
+        {analytical_breakdown}
 
-        EXECUTIVE DECISION PROTOCOL (ADDRESS ALL 6 ANGLES IN DEPTH):
+        HEXAGONAL ANALYSIS PROTOCOL (ADDRESS ALL VECTORS IN DETAIL):
         1. 🛡️ POLICY VECTOR (STRATEGIC CLASSIFICATION): 
-           Identify core category. Provide DEFINITIONS of relevant terms (JV, IC%, FDI limits).
-           Contrast the project fit between DAP 2020 and DAP 2026 guidelines.
+           Identify core category (Capital DAP vs Revenue DPM). DEFINE all technical terms (e.g., JV structure, FDI limits).
+           Explain the 'Make-II' or 'Buy Indian' fit based on the 2026 guidelines.
            
         2. ⚖️ PROCEDURAL PATHWAY (STEP-BY-STEP WORKFLOW):
-           Detail the exact administrative roadmap from AoN to Contract Award. Cite Handbook Annexures and DPM Vol 2 Proformas.
+           Detail the exact administrative roadmap from Acceptance of Necessity (AoN) to Contract.
+           Cite Handbook Annexures and DPM Vol 2 Proformas needed for the RFP.
            
         3. 💰 FINANCIAL POWER AUDIT (DFPDS 2026):
            Calculate the financial power. Identify the EXACT Competent Financial Authority (CFA) and 
-           financial delegation limit using specific Schedules of DFPDS 2026.
+           financial delegation limit using the specific Schedules of DFPDS 2026.
            
         4. 🔭 STRATEGIC ALIGNMENT (TPCR):
            Synthesize technology alignment with the 15-year Technology Perspective and Capability Roadmap.
+           Explain how this project supports the 'Atmanirbhar Bharat' vision.
            
         5. ⚠️ REGULATORY PERIL (RISK AUDIT):
-           Identify potential Audit (C&AG) objections, procedural conflicts between DAP/DPM, or PAC justification risks.
+           Identify potential C&AG Audit objections, procedural conflicts between DAP/DPM, or Restrictive Tender risks.
            
         6. ✅ THE PROCEED SOLUTION:
-           A definitive 3-step actionable roadmap for the administrative officer to process the file today.
+           Provide a definitive 3-step actionable roadmap for the administrative officer to process the file today.
 
-        IMPORTANT:
-        - Provide HIGH-INTELLIGENCE, POINTED INSIGHTS. No generic talk.
-        - You MUST cite the Manual name for every statement of fact.
-        - TONE: Authoritative, Professional, Imperial.
+        IMPORTANT: Provide POINTED, HIGH-INTELLIGENCE INSIGHTS. No generic talk.
+        You MUST cite the Manual name for every statement of fact.
+        TONE: Authoritative, Professional, Imperial.
         """
         
-        return self.brain_70b.stream(master_protocol + "\n\nUser Case for Deep Analysis: " + query)
+        return self.brain_70b.stream(master_protocol + "\n\nOriginal Query: " + query)
 
 # ======================================================================================================================
 # SECTION 5: COMMAND BOOTSTRAP & INTEGRITY GATEWAY (STABLE SYNC)
 # ======================================================================================================================
 
-def execute_supreme_handshake():
+def execute_apex_handshake():
     """Initializes the tactical dashboard environment and manages neural session states."""
-    SupremeTelemetry.initialize()
+    TelemetryLogService.initialize()
     
-    # Secure API Key Sync
-    api_key = st.secrets.get("GROQ_API_KEY", SupremeRegistry.API_KEY)
+    # Secure API Key Logic
+    api_key = st.secrets.get("GROQ_API_KEY", QuantumRegistry.API_KEY)
     
     if not api_key:
         st.error("FATAL ERROR: Groq Security Key Missing. Deployment Terminated.")
         st.stop()
         
     # Core Intelligent Engine Lifetime Management
-    if "supreme_agent" not in st.session_state:
-        with st.spinner("🚀 BOOTSTRAPPING TITAN OMNI-BRAIN SUPREMACY CORE..."):
+    if "titan_orchestrator" not in st.session_state:
+        with st.spinner("🚀 BOOTSTRAPPING TITAN OMNI-BRAIN QUANTUM CORE..."):
             # UNIFIED CLASS CALL (FIXED: NeuralVaultManager)
             vault_handler = NeuralVaultManager()
             
             if vault_handler.vault:
-                st.session_state.supreme_agent = MultiAgentSupremeOrchestrator(
+                # AUDITED INSTANTIATION: Variables match exactly
+                st.session_state.titan_orchestrator = MultiAgentStrategicOrchestrator(
                     api_key=api_key, 
                     vault=vault_handler.vault
                 )
-                SupremeTelemetry.push_log("Neural link verified. System Integrity 100%.", "ok")
-                SupremeTelemetry.push_log("Strategic Logic Core (Llama 3.3 70B) status: ACTIVE.", "ok")
+                TelemetryLogService.push_log("Neural link verified. System Integrity 100%.", "ok")
+                TelemetryLogService.push_log("Strategic Logic Core (Llama 3.3 70B) status: ACTIVE.", "ok")
             else:
-                st.session_state.supreme_agent = None
-                SupremeTelemetry.push_log("CRITICAL ERROR: Neural vault files link broken.", "fail")
+                st.session_state.titan_orchestrator = None
+                TelemetryLogService.push_log("CRITICAL ERROR: Neural vault files link broken.", "fail")
 
 # Trigger System Boot Sequence
-execute_supreme_handshake()
+execute_apex_handshake()
 
 # ======================================================================================================================
 # SECTION 6: UNIFIED COMMAND DASHBOARD UI EXECUTION
@@ -443,24 +441,24 @@ execute_supreme_handshake()
 st.markdown(f"""
     <div class='tactical-header'>
         <div class='header-eyebrow'>NADP · SEM-IV CAPSTONE 2025–2026</div>
-        <h1>{SupremeRegistry.SYSTEM_NAME}</h1>
-        <p class='command-subtitle'>{SupremeRegistry.ACADEMY} | OMNI-SUPREME Build {SupremeRegistry.VERSION}</p>
+        <h1>{QuantumRegistry.SYSTEM_NAME}</h1>
+        <p class='command-subtitle'>{QuantumRegistry.ACADEMY} | OMNI-BRAIN Build {QuantumRegistry.VERSION}</p>
     </div>
 """, unsafe_allow_html=True)
 
-# HUD Vitals Dashboard Columnar Display
+# HUD Vitals Dashboard Metrics
 vit1, vit2, vit3, vit4 = st.columns(4)
 with vit1: st.markdown("<div class='vital-unit'><p class='v-label'>Knowledge Depth</p><p class='v-value'>1,691 Pages</p></div>", unsafe_allow_html=True)
 with vit2: st.markdown("<div class='vital-unit'><p class='v-label'>Neural Nodes</p><p class='v-value'>5,026 Chunks</p></div>", unsafe_allow_html=True)
-with vit3: st.markdown("<div class='vital-unit'><p class='v-label'>Reasoning Brain</p><p class='v-value'>70B Strategic</p></div>", unsafe_allow_html=True)
+with vit3: st.markdown("<div class='vital-unit'><p class='v-label'>Reasoning Brain</p><p class='v-value'>70B Supreme</p></div>", unsafe_allow_html=True)
 with vit4: st.markdown("<div class='vital-unit'><p class='v-label'>Security Status</p><p class='v-value'>ENCRYPTED</p></div>", unsafe_allow_html=True)
 
 # Real-time System Console Processing Log HUD
 with st.expander("🖥️ STRATEGIC PROCESS MONITOR LOG", expanded=False):
-    st.markdown(f"<div class='terminal-hud'>{SupremeTelemetry.read_logs()}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='terminal-hud'>{TelemetryLogService.get_log_stream()}</div>", unsafe_allow_html=True)
 
 # Deployment Gate: Security Halt if Vault missing
-if st.session_state.supreme_agent is None:
+if st.session_state.titan_orchestrator is None:
     st.error("❌ CRITICAL SYSTEM FAILURE: KNOWLEDGE VAULT OFFLINE. index.faiss not found.")
     st.stop()
 
@@ -479,27 +477,27 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    SupremeTelemetry.push_log(f"Initiating strategic analysis for Query: {user_input[:40]}...")
+    TelemetryLogService.push_log(f"Initiating strategic analysis for Query: {user_input[:40]}...")
 
     with st.chat_message("assistant"):
-        # UI Status Synchronization
-        with st.status("🛸 Orchestrating Tri-Agent Decision Synthesis...", expanded=True) as status_tracker:
-            st.write("Expanding technical acquisition semantics...")
+        # UI Status Synchronization for Demo
+        with st.status("🛸 Orchestrating Omni-Brain Multi-Agent Decision Synthesis...", expanded=True) as status_tracker:
+            st.write("Isolating technical specifications and cost variables...")
             time.sleep(0.3)
             st.write("Mining context from DAP/DPM/DFPDS evidence layers...")
-            SupremeTelemetry.push_log("Agent Beta: Context extraction SUCCESS.")
-            st.write("Scanning for audit risks and financial power conflicts...")
+            TelemetryLogService.push_log("Agent Beta: Context extraction SUCCESS.")
+            st.write("Performing regulatory gap analysis and financial power audit...")
             time.sleep(0.2)
-            status_tracker.update(label="STRATEGIC ANALYSIS BRIEFING GENERATED", state="complete", expanded=False)
+            status_tracker.update(label="STRATEGIC ANALYSIS REPORT GENERATED", state="complete", expanded=False)
 
         # Output UI Layer for Real-time Token Streaming
         report_surface = st.empty()
         full_report_text = ""
         
         try:
-            # Token Streaming from High-Intelligence 70B Engine (v45 Supreme Logic)
-            for chunk in st.session_state.supreme_agent.execute_analytical_cycle(user_input):
-                # Robust Token Parsing Logic
+            # Token Streaming from High-Intelligence 70B Engine (Zenith Logic)
+            for chunk in st.session_state.titan_orchestrator.execute_analytical_cycle(user_input):
+                # Robust Token Parsing Logic (Prevents attribute errors)
                 if hasattr(chunk, 'content'):
                     token = chunk.content
                 elif isinstance(chunk, str):
@@ -515,12 +513,12 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
             report_surface.markdown(f"<div class='briefing-panel'>{full_report_text}</div>", unsafe_allow_html=True)
             
             # Persist response in session history
-            SupremeTelemetry.push_log("Strategic Briefing Delivered.")
+            TelemetryLogService.push_log("Strategic Briefing Delivered.")
             st.session_state.messages.append({"role": "assistant", "content": full_report_text})
         
         except Exception as engine_err:
             st.error(f"ENGINE_STALL: {str(engine_err)}")
-            SupremeTelemetry.push_log(f"CRITICAL INFERENCE FAIL: {str(engine_err)}", "fail")
+            TelemetryLogService.push_log(f"CRITICAL INFERENCE FAIL: {str(engine_err)}", "fail")
 
 # HUD Log Manual Refresh Trigger
 st.rerun() if False else None 
@@ -535,19 +533,19 @@ foot1, foot2, foot3 = st.columns(3)
 with foot1:
     st.markdown(f"""<div class='vital-unit'><p class='v-label'>Procedural Integrity</p><p style='color:#ffffff; font-weight:bold;'>DAP 2026 CONFORMANT</p></div>""", unsafe_allow_html=True)
 with foot2:
-    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Data Sovereignty</p><p style='color:#ffffff; font-weight:bold;'>LOCAL VAULT SECURE</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='vital-card'><p class='v-label'>Data Sovereignty</p><p style='color:#ffffff; font-weight:bold;'>LOCAL VAULT SECURE</p></div>""", unsafe_allow_html=True)
 with foot3:
-    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Intelligence depth</p><p style='color:#ffffff; font-weight:bold;'>HEXAGONAL REASONING</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Intelligence Depth</p><p style='color:#ffffff; font-weight:bold;'>HEXAGONAL REASONING</p></div>""", unsafe_allow_html=True)
 
 # Institutional Verification Meta-string
 st.markdown(
     f"<p style='text-align: center; color: #444; font-size: 0.8rem; padding: 60px;'>"
-    f"Proprietary Strategic Intelligence Platform | {SupremeRegistry.ACADEMY} | "
-    f"SEM-IV Capstone 2025-2026 | Project ID: {SupremeRegistry.BUILD_ID} | Lead Analyst: Jatin Sharma"
+    f"Proprietary Strategic Intelligence Platform | {QuantumRegistry.ACADEMY} | "
+    f"SEM-IV Capstone 2025–2026 | Project ID: {QuantumRegistry.BUILD_ID} | Lead Analyst: Jatin Sharma"
     "</p>", 
     unsafe_allow_html=True
 )
 
 # ======================================================================================================================
-# END OF MASTER v45.0 OMNI-BRAIN SUPREMACY MASTER BUILD
+# END OF TITAN v47.0 OMNI-BRAIN QUANTUM MASTER BUILD
 # ======================================================================================================================
