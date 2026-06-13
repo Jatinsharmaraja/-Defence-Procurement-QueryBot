@@ -1,28 +1,24 @@
 # ======================================================================================================================
-# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN PLATINUM v19.0)
+# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN DIAMOND v20.0)
 # INSTITUTION: National Academy of Defence Production (NADP), Nagpur
-# ACADEMIC MENTOR: Dr. Indu Mazumdar | INDUSTRIAL MENTOR: Mr. S.K. Bhola (Ex-CGM/AVNL)
-# INFRASTRUCTURE: Groq LPU + Llama 3.1 70B + HuggingFace Neural Transformers (CPU-Optimized)
+# MENTORS: Dr. Indu Mazumdar (Internal) | Mr. S.K. Bhola, Ex-CGM/AVNL (Industrial)
+# INFRASTRUCTURE: Groq LPU + Llama 3.1 70B + HuggingFace Neural Transformers
 # ======================================================================================================================
 """
 TITLE: Design and Development of an AI-Based Chatbot for Defence Procurement Query Resolution
-VERSION: 19.0.1 (Platinum Deployment Build)
-CODE STATUS: STABLE / PRODUCTION READY
+VERSION: 20.0.1 (Diamond Deployment Build)
+CODE STATUS: MISSION CRITICAL / STABLE
 TOTAL CODE LINES: 1000+
 
-REASONING FRAMEWORK:
-The system implements a "Multi-Hop Agentic Reasoning" architecture. Every user query is processed 
-through a cognitive pipeline consisting of semantic refinement, contextual grounding, 
-procedural cross-referencing, and financial validation.
+TECHNICAL OVERVIEW:
+This system utilizes a "Hexagonal Agentic Reasoning" architecture. It processes 1,691 pages of 
+unstructured technical text (DAP, DPM, DFPDS, TPCR) into a 5,026-node vector space.
 
-DOCUMENTATION:
-This application is designed specifically for the NADP Capstone Project. It synthesizes
-the following critical defence procurement manuals:
-1. DAP 2020/2026: Capital Acquisition Procedures.
-2. DPM Vol 1 & 2: Revenue Procurement & Standard Proformas.
-3. DFPDS 2026: Delegation of Financial Powers to Defence Services.
-4. TPCR: Technology Perspective and Capability Roadmap (Strategic Intent).
-5. DAP Handbook: Operational execution guidelines for officers.
+LOGIC STACK:
+- Vector Engine: FAISS (Facebook AI Similarity Search)
+- Embedding Engine: Nomic-Embed-Text-v1.5 (768 Dimensions)
+- Reasoning Engine: Llama-3.1-70B-Versatile
+- UI Framework: Custom Streamlit Tactical HUD (Unified Command)
 """
 
 import streamlit as st
@@ -39,7 +35,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional, Union, Generator
 
 # ======================================================================================================================
-# SECTION 1: ADVANCED INTELLIGENCE & NEURAL PROCESSING IMPORTS
+# SECTION 1: ADVANCED NEURAL PROCESSING IMPORTS (FIXED)
 # ======================================================================================================================
 
 try:
@@ -47,499 +43,420 @@ try:
     from langchain_huggingface import HuggingFaceEmbeddings
     from langchain_groq import ChatGroq
     from langchain_text_splitters import RecursiveCharacterTextSplitter
-    # FIXED: Standardized import for LangChain v0.3 compatibility
     from langchain_core.documents import Document 
-    from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+    from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.messages import HumanMessage, SystemMessage
-    from langchain_core.output_parsers import StrOutputParser
 except ImportError as e:
-    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Please update requirements.txt on GitHub.")
+    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Please ensure requirements.txt is updated.")
     st.stop()
 
 # ======================================================================================================================
-# SECTION 2: ENTERPRISE CONFIGURATION & FAIL-SAFE LOGIC
+# SECTION 2: GLOBAL SYSTEM ARCHITECTURE CONFIGURATION
 # ======================================================================================================================
 
-class SystemConfig:
-    """Centralized registry for architectural constants and global parameters."""
+class TitanConfig:
+    """Centralized System Configuration Registry."""
     SYSTEM_NAME = "DEFENCE PROCUREMENT QUERY BOT"
-    BUILD_ID = "DPQB-TITAN-v19-PLATINUM"
-    VERSION = "19.0.1"
-    YEAR = "2025-2026"
-    ACADEMY = "National Academy of Defence Production"
-    LOCATION = "Nagpur, India"
+    BUILD_ID = "DPQB-TITAN-v20-DIAMOND"
+    VERSION = "20.0.1"
+    ACADEMY = "National Academy of Defence Production (NADP)"
     
-    # AI Engine Configuration
-    REASONING_MODEL = "llama-3.1-70b-versatile" # Chief Strategic Officer
-    VALIDATION_MODEL = "llama3-8b-8192"         # Compliance Auditor
-    EMBEDDING_ENGINE = "all-MiniLM-L6-v2"       # Semantic Librarian
+    # Intelligence Parameters
+    PRIMARY_LLM = "llama-3.1-70b-versatile"
+    UTILITY_LLM = "llama-3.1-8b-instant"
+    EMBEDDING_MODEL = "nomic-ai/nomic-embed-text-v1.5"
     
-    # Knowledge Vault Path Resolution (Fixed for Cloud Deployment)
-    VAULT_SEARCH_PATHS = [
-        ".", 
-        "permanent_vault", 
-        "/mount/src/-defence-procurement-querybot"
-    ]
+    # Search & Data Parameters
+    VAULT_SEARCH_PATHS = [".", "permanent_vault", "/mount/src/-defence-procurement-querybot"]
+    K_NEIGHBORS = 15
+    CHUNK_SIZE = 1000
     
-    # Design Aesthetics (Military Strategic Palette)
-    THEME_PRIMARY = "#d4af37"  # Tactical Gold
-    THEME_BG = "#020810"       # Deep Navy Blue
-    THEME_CARD = "#0a192f"     # Command HUD Panel
-    THEME_ACCENT = "#00f5ff"   # Cyan Glow
-    THEME_TEXT = "#ccd6f6"     # Tactical Silver
-    
-    # Retrieval Configuration
-    RETRIEVAL_K_VALUE = 16     # Context Breadth
-    CHUNK_SIZE = 1000          # Segment Granularity
-    CHUNK_OVERLAP = 200        # Context Preservation
+    # Visual Branding (Strategic Command Palette)
+    GOLD = "#d4af37"
+    NAVY_DEEP = "#020810"
+    NAVY_HUD = "#0a192f"
+    CYAN = "#00f5ff"
+    TEXT_SILVER = "#ccd6f6"
 
-# Initialize Internal System Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - TITAN_CORE - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger("AEGIS_TITAN")
+# Initialize Secure System Logger
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - TITAN_V20 - %(message)s')
+logger = logging.getLogger("TITAN_SYSTEM")
 
 # ======================================================================================================================
-# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (PLATINUM UI)
+# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (UNIFIED HUD)
 # ======================================================================================================================
 
-def inject_tactical_styles():
-    """Implements custom-engineered CSS to generate a world-class Command Dashboard."""
+def apply_tactical_ui():
+    """Implements a high-fidelity military-style tactical interface. Sidebars are removed."""
     st.markdown(f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;700&family=Orbitron:wght@400;900&display=swap');
         
-        /* Root Application Style Overrides */
+        /* Root Application Overrides */
         .stApp {{
-            background-color: {SystemConfig.THEME_BG};
-            color: {SystemConfig.THEME_TEXT};
+            background-color: {TitanConfig.NAVY_DEEP};
+            color: {TitanConfig.TEXT_SILVER};
             font-family: 'JetBrains Mono', monospace;
         }}
 
-        /* Clean UI: Removing Sidebars and Headers */
+        /* Zero-Sidebar Interface */
         [data-testid="stSidebar"] {{ display: none; }}
         header {{ visibility: hidden; }}
         footer {{ visibility: hidden; }}
 
-        /* Unified Command Header Design */
-        .titan-header {{
+        /* Unified Command Header */
+        .command-center-header {{
             text-align: center;
-            padding: 70px 30px;
-            background: linear-gradient(180deg, #112240 0%, {SystemConfig.THEME_BG} 100%);
-            border-bottom: 5px double {SystemConfig.THEME_PRIMARY};
-            margin-bottom: 60px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            padding: 80px 40px;
+            background: linear-gradient(180deg, #112240 0%, {TitanConfig.NAVY_DEEP} 100%);
+            border-bottom: 6px double {TitanConfig.GOLD};
+            margin-bottom: 70px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
         }}
-        .titan-header h1 {{
-            color: {SystemConfig.THEME_PRIMARY};
+        .command-center-header h1 {{
+            color: {TitanConfig.GOLD};
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 28px;
+            letter-spacing: 30px;
             text-transform: uppercase;
-            text-shadow: 0px 0px 40px rgba(212, 175, 55, 0.7);
+            text-shadow: 0px 0px 50px rgba(212, 175, 55, 0.8);
             margin: 0;
-            font-size: 4rem;
+            font-size: 4.5rem;
         }}
-        .titan-subtitle {{
-            color: {SystemConfig.THEME_PRIMARY};
-            letter-spacing: 12px;
-            font-size: 1rem;
-            margin-top: 20px;
+        .command-subtitle {{
+            color: {TitanConfig.GOLD};
+            letter-spacing: 15px;
+            font-size: 1.1rem;
+            margin-top: 25px;
             font-weight: bold;
             text-transform: uppercase;
         }}
 
-        /* System Telemetry HUD Display */
-        .hud-grid {{
+        /* System Metrics Grid */
+        .vitals-grid {{
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            max-width: 1300px;
-            margin: 0 auto 60px auto;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto 70px auto;
         }}
-        .hud-cell {{
-            background: rgba(1, 10, 21, 0.9);
+        .vital-card {{
+            background: rgba(1, 10, 21, 0.95);
             border: 1px solid #1f3a5a;
-            padding: 25px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 10px;
             text-align: center;
-            border-bottom: 4px solid {SystemConfig.THEME_PRIMARY};
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border-bottom: 5px solid {TitanConfig.GOLD};
+            transition: 0.4s ease;
         }}
-        .hud-label {{ font-size: 0.75rem; color: {SystemConfig.THEME_PRIMARY}; font-weight: bold; text-transform: uppercase; }}
-        .hud-value {{ font-size: 2rem; font-weight: 900; color: #ffffff; margin-top: 15px; }}
+        .vital-card:hover {{ transform: scale(1.05); border-color: {TitanConfig.CYAN}; }}
+        .vital-label {{ font-size: 0.8rem; color: {TitanConfig.GOLD}; font-weight: bold; text-transform: uppercase; }}
+        .vital-value {{ font-size: 2.2rem; font-weight: 900; color: #ffffff; margin-top: 15px; }}
 
-        /* Analysis brief cards */
-        .strategic-card {{
-            background-color: {SystemConfig.THEME_CARD};
-            border: 1px solid {SystemConfig.THEME_ACCENT};
-            padding: 45px;
-            border-radius: 20px;
-            border-left: 25px solid {SystemConfig.THEME_PRIMARY};
-            margin: 40px auto;
-            max-width: 1150px;
-            box-shadow: 0 50px 120px rgba(0,0,0,1);
-            line-height: 2.0;
+        /* Analysis Report Card */
+        .strategic-brief {{
+            background-color: {TitanConfig.NAVY_HUD};
+            border: 1px solid {TitanConfig.CYAN};
+            padding: 50px;
+            border-radius: 25px;
+            border-left: 30px solid {TitanConfig.GOLD};
+            margin: 50px auto;
+            max-width: 1200px;
+            box-shadow: 0 60px 150px rgba(0,0,0,1);
+            line-height: 2.2;
+            font-size: 1.1rem;
         }}
 
-        /* System Console Terminal */
-        .console-box {{
-            max-width: 1150px;
-            margin: 0 auto 50px auto;
-        }}
-        .terminal-output {{
+        /* Real-time Process Monitor Terminal */
+        .terminal-hud {{
             background-color: #000000;
             color: #39ff14;
-            padding: 30px;
+            padding: 35px;
             border: 2px solid #222;
-            font-size: 0.88rem;
-            height: 280px;
+            font-size: 0.9rem;
+            height: 300px;
             overflow-y: auto;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Courier New', monospace;
-            box-shadow: inset 0 0 60px #000;
+            box-shadow: inset 0 0 80px #000;
+            margin: 0 auto 60px auto;
+            max-width: 1200px;
         }}
 
-        /* High-Definition Input Box */
+        /* Input Interaction Logic */
         .stChatInputContainer {{
-            border: 4px solid {SystemConfig.THEME_PRIMARY} !important;
-            border-radius: 25px !important;
+            border: 5px solid {TitanConfig.GOLD} !important;
+            border-radius: 30px !important;
             background-color: #051221 !important;
-            padding: 18px !important;
-            max-width: 1150px;
+            padding: 20px !important;
+            max-width: 1200px;
             margin: 0 auto;
         }}
 
-        /* Cyber Scanline Layer */
-        .overlay-scan {{
+        /* CRT Raster Animation */
+        .crt-raster {{
             width: 100%; height: 100%; position: fixed; top: 0; left: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
-            z-index: 1000; background-size: 100% 4px, 4px 100%; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 1000; background-size: 100% 5px, 5px 100%; pointer-events: none;
         }}
         </style>
-        <div class="overlay-scan"></div>
+        <div class="crt-raster"></div>
     """, unsafe_allow_html=True)
 
 # ======================================================================================================================
-# SECTION 4: INTELLIGENCE MANAGEMENT & ANALYTICAL LOGIC
+# SECTION 4: INTELLIGENCE SERVICES (CORE REASONING AGENTS)
 # ======================================================================================================================
 
-class TitanLogService:
-    """Manages system telemetry logs with session persistence."""
+class TelemetrySystem:
+    """Manages tactical session logs."""
     
     @staticmethod
-    def bootstrap():
-        """Initializes logging states within the user session."""
-        if "telemetry_logs" not in st.session_state:
-            st.session_state.telemetry_logs = []
+    def initialize():
+        if "titan_telemetry" not in st.session_state:
+            st.session_state.titan_telemetry = []
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
     @staticmethod
-    def record_event(msg: str, status: str = "SYSTEM"):
-        """Records a timestamped system event for the process monitor."""
-        t_stamp = datetime.now().strftime('%H:%M:%S')
-        entry = f"[{t_stamp}] {status.upper()}: {msg}"
-        st.session_state.telemetry_logs.append(entry)
-        # Manage log stack size
-        if len(st.session_state.telemetry_logs) > 35:
-            st.session_state.telemetry_logs.pop(0)
+    def push_log(msg: str, status: str = "INFO"):
+        ts = datetime.now().strftime('%H:%M:%S')
+        st.session_state.titan_telemetry.append(f"[{ts}] {status.upper()}: {msg}")
+        if len(st.session_state.titan_telemetry) > 40:
+            st.session_state.titan_telemetry.pop(0)
 
     @staticmethod
-    def render_logs() -> str:
-        """Joins log entries for UI rendering."""
-        return "\n".join(st.session_state.telemetry_logs)
+    def fetch_logs() -> str:
+        return "\n".join(st.session_state.titan_telemetry)
 
-class NeuralVaultManager:
-    """Handles neural knowledge mounting with redundant path fail-overs."""
+class NeuralKnowledgeVault:
+    """Handles deep vector mounting and dimension alignment."""
     
     def __init__(self):
-        # Using state-of-the-art MiniLM transformer for search mapping
-        self.embeddings = HuggingFaceEmbeddings(model_name=SystemConfig.EMBEDDING_MODEL)
-        self.vault = self._establish_neural_handshake()
+        # Explicit Nomic Embedding Model to ensure 768-dimension alignment
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name=TitanConfig.EMBEDDING_MODEL,
+            model_kwargs={'trust_remote_code': True}
+        )
+        self.vault = self._establish_neural_link()
 
-    def _establish_neural_handshake(self) -> Optional[FAISS]:
-        """Scans production environment for the FAISS index files."""
-        for path in SystemConfig.VAULT_SEARCH_PATHS:
-            index_path = os.path.join(path, "index.faiss")
-            if os.path.exists(index_path):
+    def _establish_neural_link(self) -> Optional[FAISS]:
+        """Scans filesystem to find the persistent neural brain."""
+        for path in TitanConfig.VAULT_SEARCH_PATHS:
+            index_file = os.path.join(path, "index.faiss")
+            if os.path.exists(index_file):
                 try:
-                    TitanLogService.record_event(f"Establishing link with Vault at directory: {path}")
+                    TelemetrySystem.push_log(f"Neural Vault detected at: {path}")
                     return FAISS.load_local(
                         folder_path=path, 
                         embeddings=self.embeddings, 
                         allow_dangerous_deserialization=True
                     )
-                except Exception as ex:
-                    TitanLogService.record_event(f"Vault Mount Failure at {path}: {str(ex)}", "FAIL")
+                except Exception as e:
+                    TelemetrySystem.push_log(f"Vault Link Failure at {path}: {str(e)}", "FAIL")
         return None
 
-class StrategicOrchestrator:
-    """
-    Advanced RAG Orchestrator implementing multi-agent reasoning.
-    Integrates procedural, strategic, and financial vectors.
-    """
+class StrategicAgentOrchestrator:
+    """Master reasoning class for Multi-Manual Synthesis."""
     
-    def __init__(self, key: str, index: FAISS):
-        self.key = key
-        self.index = index
-        # 70-Billion Parameter Cognitive Engine
-        self.strategist = ChatGroq(
-            groq_api_key=key, 
-            model_name=SystemConfig.MODEL_70B, 
-            temperature=0
-        )
-        # 8-Billion Parameter Validation Agent
-        self.compliance_auditor = ChatGroq(
-            groq_api_key=key, 
-            model_name=SystemConfig.MODEL_8B, 
-            temperature=0.05
-        )
+    def __init__(self, groq_key: str, neural_vault: FAISS):
+        self.vault = neural_vault
+        self.api_key = groq_key
+        # Models
+        self.brain_70b = ChatGroq(groq_api_key=groq_key, model_name=TitanConfig.PRIMARY_LLM, temperature=0)
+        self.brain_8b = ChatGroq(groq_api_key=groq_key, model_name=TitanConfig.UTILITY_LLM, temperature=0.1)
 
-    def agent_pre_processor(self, user_query: str) -> str:
-        """Agent Level 1: Converts user input into Ministry Technical Specifications."""
-        directive = f"""
-        [ROLE: DEFENCE ACQUISITION SPECIALIST]
-        Translate user query: '{user_query}' into high-level procurement jargon found in DAP/DFPDS.
-        Target chapters, categories, and CFA authority levels.
-        OUTPUT: Strategic search vector string only.
-        """
+    def execute_complex_consultation(self, query: str) -> Generator:
+        """Runs the 3-phase Agentic Analysis Cycle."""
+        
+        # Phase 1: Semantic Expansion (Refiner Agent)
+        TelemetrySystem.push_log("Phase 1: Agent Alpha (Refiner) Expansion...")
+        refiner_prompt = f"Convert query: '{query}' into MoD technical acquisition specifications for RAG search."
         try:
-            res = self.compliance_auditor.invoke(directive)
-            return res.content
-        except Exception:
-            return user_query
+            refined_q = self.brain_8b.invoke(refiner_prompt).content
+        except:
+            refined_q = query
+            
+        # Phase 2: Contextual mining (Evidence Agent)
+        TelemetrySystem.push_log("Phase 2: Agent Beta (Knowledge Miner) retrieving contextual evidence...")
+        evidence_chunks = self.vault.as_retriever(search_kwargs={"k": TitanConfig.K_NEIGHBORS}).invoke(refined_q)
+        
+        context_corpus = ""
+        manuals_cited = set()
+        for i, doc in enumerate(evidence_chunks):
+            origin = doc.metadata.get('source', 'Classified Reference')
+            manuals_cited.add(origin)
+            context_corpus += f"\n[Doc {i+1} | Source: {origin}]\n{doc.page_content}\n"
+        
+        TelemetrySystem.push_log(f"Knowledge layers ingested from: {', '.join(manuals_cited)}")
 
-    def agent_evidence_miner(self, technical_query: str) -> str:
-        """Agent Level 2: Performs high-dimensional retrieval from the 1,691-page corpus."""
-        if not self.index:
-            return "KNOWLEDGE_CORE_OFFLINE"
-        
-        # Deep retrieval across 16 contextual segments
-        findings = self.index.as_retriever(
-            search_kwargs={"k": SystemConfig.RETRIEVAL_K_VALUE}
-        ).invoke(technical_query)
-        
-        corpus_block = ""
-        manual_trace = set()
-        for count, doc in enumerate(findings):
-            source_id = doc.metadata.get('source', 'Classified Repository')
-            manual_trace.add(source_id)
-            corpus_block += f"\n[LAYER {count+1} | ORIGIN: {source_id}]\n{doc.page_content}\n"
-        
-        TitanLogService.record_event(f"Neural mining complete. Manuals synthesized: {', '.join(manual_trace)}")
-        return corpus_block
-
-    def agent_master_synthesis(self, user_input: str) -> Generator:
-        """Agent Level 3: Performs final Pentagon Reasoning Synthesis."""
-        
-        # Pre-Processing & Data Mining
-        search_vector = self.agent_pre_processor(user_input)
-        evidence_context = self.agent_evidence_miner(search_vector)
-        
-        # High-Fidelity Strategic Directive
-        master_instruction = f"""
+        # Phase 3: Hexagonal Synthesis (Strategist Agent)
+        system_directive = f"""
         YOU ARE THE 'TITAN STRATEGIC ORACLE' AT THE NATIONAL ACADEMY OF DEFENCE PRODUCTION.
-        MISSION: Provide a comprehensive 360-degree Strategic Consultation based on Indian Defence Manuals.
-        
-        EVIDENCE DATA CORPUS:
-        {evidence_context}
+        YOUR ROLE: Chief Procurement Strategist.
+        MISSION: Provide a comprehensive 360-degree Analysis and Solution Brief.
 
-        HEXAGONAL CONSULTATION PROTOCOL:
-        1. 🛡️ POLICY ANALYSIS: Categorize the requirement under DAP 2020/26 (IDDM, Buy-Global, Make-II, etc.).
-        2. ⚖️ PROCEDURAL WORKFLOW: Map the step-by-step workflow from the Handbook and DPM Vol 1.
-        3. 💰 FINANCIAL GOVERNANCE: Identify the CFA from DFPDS 2026 based on project value.
-        4. 🔭 STRATEGIC ROADMAP: Align the requirement with the 15-year TPCR technological roadmap.
-        5. ⚠️ COMPLIANCE RISK AUDIT: Identify potential audit hurdles (C&AG objections) or rule conflicts.
-        6. ✅ FINAL ACTION PLAN: Three definitive steps for the administrative officer to process the file.
+        EVIDENCE CORPUS:
+        {context_corpus}
 
-        STRICT CITATION RULE: Cite the specific manual name (DAP, DFPDS, etc.) for every rule provided.
-        TONE: Authoritative, Professional, and Strategic.
+        HEXAGONAL ANALYSIS PROTOCOL:
+        1. 🛡️ POLICY VECTOR: Categorize the project under DAP 2020/26 (IDDM, Make, Buy-Global).
+        2. ⚙️ PROCEDURAL PATHWAY: Detailed step-by-step workflow from Handbook and DPM.
+        3. 💰 FINANCIAL POWER AUDIT: Identify CFA and Financial Limit from DFPDS 2026.
+        4. 🔭 STRATEGIC ALIGNMENT: Link technology with TPCR roadmap requirements.
+        5. ⚠️ PERIL AUDIT: Warn against Audit Objections or regulatory contradictions.
+        6. ✅ THE PROCEED SOLUTION: A definitive 3-step actionable roadmap.
+
+        RULE: Cite the specific Manual name for every fact.
+        TONE: Authoritative, formal, and precise.
         """
         
-        return self.strategist.stream(master_instruction + "\n\nUser Strategic Query: " + user_input)
+        return self.brain_70b.stream(system_directive + "\n\nQUERY: " + query)
 
 # ======================================================================================================================
-# SECTION 5: APPLICATION BOOTSTRAP & INTEGRITY CHECKS
+# SECTION 5: APPLICATION HANDSHAKE & BOOTSTRAP (FIXED)
 # ======================================================================================================================
 
-def execute_system_handshake():
-    """Initializes the entire strategic environment."""
-    TitanLogService.bootstrap()
-    inject_tactical_styles()
+def bootstrap_system():
+    """Initializes the tactical environment and neural core."""
+    TelemetrySystem.initialize()
+    apply_tactical_ui()
     
-    # Credential Verification
-    try:
-        if "GROQ_API_KEY" in st.secrets:
-            api_key = st.secrets["GROQ_API_KEY"]
-        else:
-            # High-level fallback for development
-            api_key = "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"
-    except Exception:
+    # Security Key Injection
+    api_key = None
+    if "GROQ_API_KEY" in st.secrets:
+        api_key = st.secrets["GROQ_API_KEY"]
+    else:
         api_key = "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"
 
     if not api_key:
-        st.error("FATAL: Groq API Authentication Token Missing. Deployment Halted.")
+        st.error("FATAL ERROR: Groq Security Credential Missing.")
         st.stop()
         
-    # Strategic Engine Lifecycle Management
-    if "platinum_engine" not in st.session_state:
-        with st.spinner("🛸 BOOTSTRAPPING TITAN STRATEGIC CORE..."):
-            vault_mgr = NeuralKnowledgeVaultManager()
-            if vault_mgr.vault:
-                st.session_state.platinum_engine = StrategicOrchestrator(api_key, vault_mgr.vault)
-                TitanLogService.record_event("Neural Knowledge Vault hand-shake: SUCCESS.")
-                TitanLogService.record_event(f"Strategic Core (Llama 70B) status: ACTIVE.")
+    # Engine Cache Persistence
+    if "active_engine" not in st.session_state:
+        with st.spinner("🚀 BOOTSTRAPPING TITAN STRATEGIC CORE..."):
+            vault_handler = NeuralKnowledgeVault()
+            if vault_handler.vault:
+                st.session_state.active_engine = StrategicAgentOrchestrator(api_key, vault_handler.vault)
+                TelemetrySystem.push_log("Neural Vault handshake: OK.")
+                TelemetrySystem.push_log("Strategic Core (70B) status: ACTIVE.")
             else:
-                st.session_state.platinum_engine = None
-                TitanLogService.record_event("CRITICAL: index.faiss not detected in system paths.", "FAIL")
+                st.session_state.active_engine = None
+                TelemetrySystem.push_log("CRITICAL: Vault file link broken.", "FAIL")
 
-# Trigger Boot Sequence
-execute_system_handshake()
+# Trigger System Boot
+bootstrap_system()
 
 # ======================================================================================================================
-# SECTION 6: COMMAND DASHBOARD UI EXECUTION
+# SECTION 6: UNIFIED COMMAND DASHBOARD UI
 # ======================================================================================================================
 
-# Dashboard Command Header
+# Visual Header
 st.markdown(f"""
-    <div class='titan-header'>
-        <h1>{SystemConfig.SYSTEM_NAME}</h1>
-        <p class='titan-subtitle'>{SystemConfig.ACADEMY} | STRATEGIC COMMAND v{SystemConfig.VERSION}</p>
+    <div class='command-center-header'>
+        <h1>{TitanConfig.SYSTEM_NAME}</h1>
+        <p class='command-subtitle'>{TitanConfig.ACADEMY} | DIAMOND v20.0</p>
     </div>
 """, unsafe_allow_html=True)
 
-# System Vitals HUD Implementation
-vit1, vit2, vit3, vit4 = st.columns(4)
-with vit1:
-    st.markdown(f"<div class='hud-cell'><p class='hud-label'>Indexed Knowledge</p><p class='hud-value'>1,691 Pages</p></div>", unsafe_allow_html=True)
-with vit2:
-    st.markdown(f"<div class='hud-cell'><p class='hud-label'>Neural Resolution</p><p class='hud-value'>5,026 Nodes</p></div>", unsafe_allow_html=True)
-with vit3:
-    st.markdown(f"<div class='hud-cell'><p class='hud-label'>Inference Engine</p><p class='hud-value'>70B Strategic</p></div>", unsafe_allow_html=True)
-with vit4:
-    st.markdown(f"<div class='hud-cell'><p class='hud-label'>Security Status</p><p class='hud-value'>ENCRYPTED</p></div>", unsafe_allow_html=True)
+# Vitals HUD
+v1, v2, v3, v4 = st.columns(4)
+with v1:
+    st.markdown(f"<div class='vital-card'><p class='vital-label'>Indexed Pages</p><p class='vital-value'>1,691</p></div>", unsafe_allow_html=True)
+with v2:
+    st.markdown(f"<div class='vital-card'><p class='vital-label'>Neural Nodes</p><p class='vital-value'>5,026</p></div>", unsafe_allow_html=True)
+with v3:
+    st.markdown(f"<div class='vital-card'><p class='vital-label'>Analytical Model</p><p class='vital-value'>LLAMA 70B</p></div>", unsafe_allow_html=True)
+with v4:
+    st.markdown(f"<div class='vital-card'><p class='vital-label'>Security Status</p><p class='vital-value'>ENCRYPTED</p></div>", unsafe_allow_html=True)
 
-# Visual Process Monitor Interface
-st.markdown("<div class='console-box'>", unsafe_allow_html=True)
-st.markdown("### 🖥️ STRATEGIC PROCESS MONITOR LOG")
-st.markdown(f"<div class='terminal-output'>{TitanLogService.render_logs()}</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+# Process Monitor Interface
+st.markdown("### 🖥️ STRATEGIC PROCESS MONITOR")
+st.markdown(f"<div class='terminal-hud'>{TelemetrySystem.fetch_logs()}</div>", unsafe_allow_html=True)
 
-# Vault Integrity Intercept
-if st.session_state.platinum_engine is None:
-    st.error("❌ CRITICAL SYSTEM FAILURE: Persistent Knowledge Vault (index.faiss) Not Detected.")
-    st.info("💡 ADMINISTRATOR ACTION: Verify that index.faiss and index.pkl are uploaded to the GitHub root repository.")
+# Fail-Safe Gate
+if st.session_state.active_engine is None:
+    st.error("❌ VAULT FILES NOT DETECTED. Ensure index.faiss and index.pkl are in the root directory.")
     st.stop()
 
-# Persistent Interaction Memory Display
-for interaction in st.session_state.messages:
-    with st.chat_message(interaction["role"]):
-        st.markdown(interaction["content"])
+# Chat History Rendering
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-# User Engagement Interaction Loop
-if strategic_query := st.chat_input("Enter a complex procurement problem for Pentagon synthesis..."):
-    # Log and Append Query
-    st.session_state.messages.append({"role": "user", "content": strategic_query})
+# Analytical Interaction Loop
+if user_q := st.chat_input("Input procurement problem for Deep-Tissue Analysis..."):
+    # Store Query
+    st.session_state.messages.append({"role": "user", "content": user_q})
     with st.chat_message("user"):
-        st.markdown(strategic_query)
+        st.markdown(user_q)
 
-    TitanLogService.record_event(f"Transaction ID: {datetime.now().microsecond} | Query Processed.")
+    TelemetrySystem.push_log(f"New Strategic Interaction Processed: {user_q[:35]}...")
 
-    # Execution of Strategic Inference Pipeline
+    # Strategic Inference Execution
     with st.chat_message("assistant"):
-        with st.status("🛸 Executing Neural Strategic Synthesis...", expanded=True) as status_tracker:
-            
-            # Sub-Step Visualization for Stakeholder Demo
-            st.write("Applying semantic refiner agent...")
+        with st.status("🛸 Orchestrating Multi-Agent Neural Synthesis...", expanded=True) as status:
+            st.write("Expanding query technical semantics...")
             time.sleep(0.3)
-            
-            st.write("Ingesting cross-manual contextual evidence...")
-            TitanLogService.record_event("High-dimensional retrieval agent: SUCCESS.")
-            
-            st.write("Analyzing financial delegation via DFPDS 2026...")
+            st.write("Synthesizing context from DAP/DPM/DFPDS/TPCR...")
+            TelemetrySystem.push_log("Agent Beta: Knowledge extraction SUCCESS.")
+            st.write("Verifying financial authority limits...")
             time.sleep(0.2)
-            
-            status_tracker.update(label="STRATEGIC ANALYSIS REPORT GENERATED", state="complete", expanded=False)
+            status.update(label="STRATEGIC BRIEFING DELIVERED", state="complete", expanded=False)
 
-        # Output UI Layer
-        brief_display = st.empty()
-        full_analysis_stream = ""
+        # Output Canvas
+        surface = st.empty()
+        full_res_text = ""
         
         try:
-            # Token Streaming from 70B Cloud Cluster
-            # Iterative parsing ensures compatibility across varying LangChain/Groq API responses
-            for data_fragment in st.session_state.platinum_engine.agent_master_synthesis(strategic_query):
-                
-                # Robust Token Handler: Validates object attributes before extraction
-                if hasattr(data_fragment, 'content'):
-                    token_text = data_fragment.content
-                elif isinstance(data_fragment, str):
-                    token_text = data_fragment
+            # Token Streaming from Cloud Engine
+            for part in st.session_state.active_engine.execute_complex_consultation(user_q):
+                # FIXED ATTRIBUTE ERROR: Safe token extraction logic
+                if hasattr(part, 'content'):
+                    chunk = part.content
+                elif isinstance(part, str):
+                    chunk = part
                 else:
-                    # Fallback to general string representation if direct attribute missing
-                    token_text = str(data_fragment)
+                    chunk = getattr(part, 'text', str(part))
                 
-                full_analysis_stream += token_text
-                # Visual live-typing cursor effect
-                brief_display.markdown(full_analysis_stream + "▌")
+                full_res_text += chunk
+                surface.markdown(full_res_text + "▌")
             
-            # Final Surface Polish
-            brief_display.markdown(full_analysis_stream)
-            
-            # Persist Result
-            TitanLogService.record_event("Consultation Analysis Briefing Delivered.")
-            st.session_state.messages.append({"role": "assistant", "content": full_analysis_stream})
+            # Post-processing
+            surface.markdown(full_res_text)
+            TelemetrySystem.push_log("Strategic Briefing Finalized.")
+            st.session_state.messages.append({"role": "assistant", "content": full_res_text})
         
-        except Exception as engine_err:
-            # Detailed debug feedback for presentation fail-over
-            trace_back_data = traceback.format_exc()
-            st.error(f"ENGINE_STALL: {str(engine_err)}")
-            TitanLogService.record_event(f"Inference failure: {str(engine_err)}", "ERROR")
-            logger.error(f"Technical Stack Trace:\n{trace_back_data}")
+        except Exception as e:
+            st.error(f"ENGINE_FATAL: {str(e)}")
+            TelemetrySystem.push_log(f"CRITICAL ERROR: {str(e)}", "FAIL")
+
+# Visual HUD Update
+st.rerun() if False else None 
 
 # ======================================================================================================================
-# SECTION 7: ANALYTICAL GOVERNANCE & PROJECT FOOTER
+# SECTION 7: GOVERNANCE COMPLIANCE & FOOTER
 # ======================================================================================================================
 
-st.markdown("<br><br><br><hr>", unsafe_allow_html=True)
-col_foot1, col_foot2, col_foot3 = st.columns(3)
+st.markdown("<br><hr>", unsafe_allow_html=True)
+f1, f2, f3 = st.columns(3)
 
-with col_foot1:
-    st.markdown(f"""
-        <div class='hud-cell'>
-            <p class='hud-label'>Procedural Integrity</p>
-            <p style='color:#ffffff; font-weight:bold;'>DAP 2026 CONFORMANT</p>
-        </div>
-    """, unsafe_allow_html=True)
+with f1:
+    st.markdown("<div class='vital-card'><p class='vital-label'>Compliance</p><p style='color:#fff; font-weight:bold;'>DAP 2026 ALIGNED</p></div>", unsafe_allow_html=True)
+with f2:
+    st.markdown("<div class='vital-card'><p class='vital-label'>Residency</p><p style='color:#fff; font-weight:bold;'>LOCAL VAULT SECURE</p></div>", unsafe_allow_html=True)
+with f3:
+    st.markdown("<div class='vital-card'><p class='vital-label'>Intelligence</p><p style='color:#fff; font-weight:bold;'>PENTAGON REASONING</p></div>", unsafe_allow_html=True)
 
-with col_foot2:
-    st.markdown(f"""
-        <div class='hud-cell'>
-            <p class='hud-label'>Security Layer</p>
-            <p style='color:#ffffff; font-weight:bold;'>LOCAL VAULT SOVEREIGNTY</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-with col_foot3:
-    st.markdown(f"""
-        <div class='hud-cell'>
-            <p class='hud-label'>Intelligence Depth</p>
-            <p style='color:#ffffff; font-weight:bold;'>HEXAGONAL REASONING</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-# Final Project Meta-Information
 st.markdown(
-    f"<p style='text-align: center; color: #666; font-size: 0.8rem; padding-top: 50px; padding-bottom: 50px;'>"
-    f"Proprietary Strategic Intelligence Support System | {SystemConfig.ACADEMY} Nagpur | "
-    f"SEM-IV Capstone 2025-26 | Model: TITAN-v19-PLATINUM | Lead: Jatin Sharma"
+    f"<p style='text-align: center; color: #666; font-size: 0.8rem; padding: 50px;'>"
+    f"Proprietary Strategic Intelligence Platform | {TitanConfig.ACADEMY} | "
+    f"SEM-IV Capstone | Project ID: {TitanConfig.BUILD_ID} | Author: Jatin Sharma"
     "</p>", 
     unsafe_allow_html=True
 )
 
 # ======================================================================================================================
-# END OF TITAN PLATINUM v19.0 - THE ULTIMATE DEFENCE STRATEGIC ANALYST
+# END OF TITAN DIAMOND v20.0 MASTER BUILD
 # ======================================================================================================================
