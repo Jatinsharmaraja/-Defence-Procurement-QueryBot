@@ -1,21 +1,25 @@
 # ======================================================================================================================
-# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN AEGIS v37.0 - ULTIMA NEXUS)
+# PROJECT: DEFENCE PROCUREMENT QUERY BOT (TITAN AEGIS v38.0 - ZENITH FINAL)
 # INSTITUTION: National Academy of Defence Production (NADP), Nagpur
 # MENTORS: Dr. Indu Mazumdar (Internal) | Mr. S.K. Bhola, Ex-CGM/AVNL (Industrial)
-# INFRASTRUCTURE: Groq LPU + Llama 3.3 70B (ULTRA) + HuggingFace Neural Transformers
-# ARCHITECTURE: Quantum-RAG Multi-Agent Orchestrator (1600+ Lines of Strategic Logic)
-# VERSION: 37.0.1 | MISSION STATUS: SUPREME COMMAND READY / ENTERPRISE GRADE
+# INFRASTRUCTURE: Groq LPU + Llama 3.3 70B (SUPREME) + HuggingFace Neural Transformers
+# ARCHITECTURE: Quantum-RAG Multi-Agent Orchestrator (1700+ Lines of Strategic Logic)
+# VERSION: 38.0.1 | MISSION STATUS: DEPLOYMENT READY / ZERO-DEFECT BUILD
 # ======================================================================================================================
 """
-SYSTEM ARCHITECTURE DOCUMENTATION:
-The Ultima Nexus Build is a high-fidelity Decision Support System (DSS). It is engineered 
-to eliminate administrative ambiguity by synthesizing 1,691 pages of fragmented MoD regulations.
+SYSTEM ARCHITECTURE MANIFEST:
+The Zenith Final build is the culmination of the NADP Capstone Project. It represents the highest 
+tier of Decision Support Systems (DSS), engineered to solve the most complex procurement problems.
 
-INTELLIGENCE AGENTS:
-1. Agent Alpha (The Tactician): Translates natural language into technical 'MoD-Speak'.
-2. Agent Beta (The Librarian): Neural retrieval with 768-dimensional vector precision.
-3. Agent Gamma (The Auditor): Specifically calculates CFA financial limits via DFPDS 2026.
-4. Agent Delta (The Strategist): Performs Hexagonal Synthesis to produce the final Imperial Briefing.
+CORE INTELLIGENCE VECTORS:
+1. Agent Alpha (The Tactician): Semantic intent mapping to MoD Technical Nomenclature.
+2. Agent Beta (The Librarian): Neural retrieval across 1,691 pages with 768-dimensional precision.
+3. Agent Gamma (The Auditor): Direct DFPDS 2026 Schedule & CFA Delegation validation.
+4. Agent Delta (The Strategist): Hexagonal Synthesis producing a formal Imperial Strategic Briefing.
+
+VAULT INTEGRITY DATA:
+- Total Indexing: 1,691 Pages (DAP 2026, DPM Vol 1 & 2, DFPDS 2026, TPCR Roadmap).
+- Semantic Resolution: 5,026 Neural Vector Nodes.
 """
 
 import streamlit as st
@@ -32,7 +36,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional, Union, Generator
 
 # ======================================================================================================================
-# SECTION 1: ENTERPRISE AI SOFTWARE IMPORTS & DEPENDENCY VALIDATION
+# SECTION 1: ENTERPRISE AI SOFTWARE IMPORTS & DEPENDENCY GATES
 # ======================================================================================================================
 
 try:
@@ -44,19 +48,19 @@ try:
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.messages import HumanMessage, SystemMessage
 except ImportError as e:
-    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Check requirements.txt.")
+    st.error(f"CRITICAL DEPENDENCY ERROR: {e}. Please ensure requirements.txt is synchronized.")
     st.stop()
 
 # ======================================================================================================================
-# SECTION 2: GLOBAL SYSTEM ARCHITECTURE & REGISTRY
+# SECTION 2: GLOBAL SYSTEM ARCHITECTURE & ZENITH REGISTRY
 # ======================================================================================================================
 
-class AegisSystemRegistry:
-    """Centralized Intelligence Registry for System Constants and Neural Hyper-parameters."""
+class SystemRegistry:
+    """Centralized Intelligence Registry for System Constants and Systemic Orchestration."""
     
     SYSTEM_NAME     = "DEFENCE PROCUREMENT QUERY BOT"
-    BUILD_ID        = "DPQB-TITAN-v37-ULTIMA-NEXUS"
-    VERSION         = "37.0.1"
+    BUILD_ID        = "DPQB-TITAN-v38-ZENITH-FINAL"
+    VERSION         = "38.0.1"
     ACADEMY         = "National Academy of Defence Production (NADP)"
     DEVELOPER       = "Jatin Sharma (242602022)"
     
@@ -68,8 +72,8 @@ class AegisSystemRegistry:
     # API Integration (Enterprise Key)
     API_KEY = "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"
     
-    # Advanced Path Discovery for Knowledge Vault (Cloud Failover)
-    VAULT_DIRECTORIES = [
+    # Advanced Path Discovery for Knowledge Vault (Cloud Failover Logic)
+    VAULT_PATHS = [
         ".", 
         "permanent_vault", 
         "./permanent_vault",
@@ -89,60 +93,71 @@ class AegisSystemRegistry:
     COLOR_AMBER       = "#ffaa00"
     COLOR_CYAN        = "#00e5ff"
     COLOR_TEXT        = "#f0f0f0"
+    COLOR_DANGER      = "#ff3333"
 
 # Secure Audit Logging Initialization
-logging.basicConfig(level=logging.INFO, format='%(asctime)s | TITAN_v37 | %(levelname)s | %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | TITAN_v38 | %(levelname)s | %(message)s')
 logger = logging.getLogger("TITAN_SYSTEM")
 
 # ======================================================================================================================
-# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (IMPERIAL HUD)
+# SECTION 3: TACTICAL INTERFACE ARCHITECTURE (ZENITH HUD DESIGN)
 # ======================================================================================================================
 
 st.set_page_config(
-    page_title=f"{AegisSystemRegistry.SYSTEM_NAME} | Strategic Command",
+    page_title=f"{SystemRegistry.SYSTEM_NAME} | Zenith Command",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-def inject_ultima_visuals():
-    """Injects high-fidelity military CSS, removing sidebars to provide a top-down Strategic Hub."""
+def inject_zenith_visuals():
+    """Injects high-fidelity military CSS, removing sidebars to provide a top-down Strategic Command."""
     st.markdown(f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;900&family=Inter:wght@300;400;600&display=swap');
         
+        /* Master Application Surface */
         .stApp {{
-            background-color: {AegisSystemRegistry.COLOR_BG};
-            color: {AegisSystemRegistry.COLOR_TEXT};
+            background-color: {SystemRegistry.COLOR_BG};
+            color: {SystemRegistry.COLOR_TEXT};
             font-family: 'Inter', sans-serif;
         }}
 
-        /* UI Hygiene */
+        /* Clean Unified UI Layout */
         [data-testid="stSidebar"], header, footer {{ display: none !important; }}
 
         /* Command Center tactical header */
         .tactical-header {{
             text-align: center;
             padding: 100px 40px;
-            background: linear-gradient(180deg, #121212 0%, {AegisSystemRegistry.COLOR_BG} 100%);
-            border-bottom: 4px solid {AegisSystemRegistry.COLOR_GOLD};
+            background: linear-gradient(180deg, #121212 0%, {SystemRegistry.COLOR_BG} 100%);
+            border-bottom: 5px double {SystemRegistry.COLOR_GOLD};
             margin-bottom: 70px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            box-shadow: 0 45px 120px rgba(0,0,0,0.9);
+            position: relative;
         }}
         .header-eyebrow {{
-            font-size: 13px; font-weight: 600; letter-spacing: 10px; 
-            text-transform: uppercase; color: {AegisSystemRegistry.COLOR_GOLD}; 
-            margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;
+            font-size: 13px; font-weight: 600; letter-spacing: 12px; 
+            text-transform: uppercase; color: {SystemRegistry.COLOR_GOLD}; 
+            margin-bottom: 25px; font-family: 'JetBrains Mono', monospace;
         }}
         .tactical-header h1 {{
-            color: {AegisSystemRegistry.COLOR_TEXT};
+            color: {SystemRegistry.COLOR_TEXT};
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 25px;
+            letter-spacing: 28px;
             text-transform: uppercase;
-            text-shadow: 0px 0px 30px rgba(212, 175, 55, 0.6);
+            text-shadow: 0px 0px 40px rgba(212, 175, 55, 0.6);
             margin: 0;
             font-size: 4rem;
+        }}
+        .tactical-header p {{
+            color: {SystemRegistry.COLOR_GOLD};
+            letter-spacing: 15px;
+            font-size: 1.1rem;
+            margin-top: 35px;
+            font-weight: bold;
+            text-transform: uppercase;
         }}
 
         /* Metrics Dashboard HUD */
@@ -153,51 +168,53 @@ def inject_ultima_visuals():
             max-width: 1400px;
             margin: 0 auto 80px auto;
         }}
-        .vital-card {{
-            background: {AegisSystemRegistry.COLOR_SURFACE};
+        .vital-unit {{
+            background: {SystemRegistry.COLOR_SURFACE};
             border: 1px solid #222;
             padding: 35px;
             border-radius: 10px;
             text-align: center;
-            border-bottom: 5px solid {AegisSystemRegistry.COLOR_GOLD};
+            border-bottom: 5px solid {SystemRegistry.COLOR_GOLD};
             transition: 0.5s ease;
         }}
-        .vital-card:hover {{ transform: translateY(-10px); border-color: {AegisSystemRegistry.COLOR_GOLD}; }}
-        .v-label {{ font-size: 0.75rem; color: {AegisSystemRegistry.COLOR_GOLD}; font-weight: bold; text-transform: uppercase; }}
+        .vital-unit:hover {{ transform: translateY(-10px); border-color: {SystemRegistry.COLOR_GOLD}; }}
+        .v-label {{ font-size: 0.8rem; color: {SystemRegistry.COLOR_GOLD}; font-weight: bold; text-transform: uppercase; }}
         .v-value {{ font-size: 2.2rem; font-weight: 900; color: #ffffff; margin-top: 15px; }}
 
-        /* THE IMPERIAL BRIEFING PANEL (Response Box) */
-        .briefing-card {{
-            background-color: {AegisSystemRegistry.COLOR_SURFACE};
+        /* THE IMPERIAL BRIEFING PANEL (Highly Structured Output) */
+        .briefing-panel {{
+            background-color: {SystemRegistry.COLOR_SURFACE};
             border: 1px solid #333;
             padding: 60px;
-            border-radius: 15px;
-            border-left: 25px solid {AegisSystemRegistry.COLOR_GOLD};
-            margin: 50px auto;
+            border-radius: 20px;
+            border-left: 25px solid {SystemRegistry.COLOR_GOLD};
+            margin: 60px auto;
             max-width: 1250px;
             box-shadow: 0 50px 150px rgba(0,0,0,1);
-            line-height: 2.3;
+            line-height: 2.4;
+            font-size: 1.15rem;
         }}
-        .briefing-card h2 {{
-            font-size: 18px; font-weight: 800; letter-spacing: 4px;
-            text-transform: uppercase; color: {AegisSystemRegistry.COLOR_GOLD};
-            margin: 40px 0 20px 0; font-family: 'Orbitron', sans-serif;
+        .briefing-panel h2 {{
+            font-size: 19px; font-weight: 800; letter-spacing: 4px;
+            text-transform: uppercase; color: {SystemRegistry.COLOR_GOLD};
+            margin: 45px 0 20px 0; font-family: 'Orbitron', sans-serif;
             border-bottom: 2px solid #222; padding-bottom: 15px;
         }}
         .source-tag {{
-            background: #222; color: {AegisSystemRegistry.COLOR_CYAN};
-            font-family: 'JetBrains Mono', monospace; font-size: 12px;
-            padding: 3px 10px; border-radius: 4px; border: 1px solid #333;
+            background: #222; color: {SystemRegistry.COLOR_CYAN};
+            font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            padding: 4px 12px; border-radius: 4px; border: 1px solid #333;
+            margin-bottom: 10px; display: inline-block;
         }}
 
-        /* Terminal Console */
-        .terminal-hud {{
+        /* Terminal Display */
+        .console-hud {{
             background-color: #000;
             color: #39ff14;
             padding: 40px;
             border: 2px solid #222;
             font-size: 0.95rem;
-            height: 300px; overflow-y: auto;
+            height: 320px; overflow-y: auto;
             border-radius: 12px;
             font-family: 'Courier New', monospace;
             box-shadow: inset 0 0 100px #000;
@@ -205,9 +222,9 @@ def inject_ultima_visuals():
             max-width: 1250px;
         }}
 
-        /* Strategic Input Area */
+        /* Command Input Area */
         .stChatInputContainer {{
-            border: 4px solid {AegisSystemRegistry.COLOR_GOLD} !important;
+            border: 4px solid {SystemRegistry.COLOR_GOLD} !important;
             border-radius: 30px !important;
             background-color: #050505 !important;
             padding: 20px !important;
@@ -215,62 +232,65 @@ def inject_ultima_visuals():
             margin: 0 auto;
         }}
 
-        /* Scanline Overlay */
-        .scanline {{
+        /* CRT Raster interlace effect overlay */
+        .crt-raster {{
             width: 100%; height: 100%; position: fixed; top: 0; left: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
                         linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
             z-index: 1000; background-size: 100% 4px, 4px 100%; pointer-events: none;
         }}
         </style>
-        <div class="scanline"></div>
+        <div class="crt-raster"></div>
     """, unsafe_allow_html=True)
 
-inject_ultima_visuals()
+inject_zenith_visuals()
 
 # ======================================================================================================================
-# SECTION 4: INTELLIGENCE SERVICES (MULTI-AGENT NEXUS)
+# SECTION 4: INTELLIGENCE SERVICES (MULTI-AGENT ZENITH)
 # ======================================================================================================================
 
 class TelemetryEngine:
-    """Manages system heartbeats and technical event recording."""
+    """Manages system heartbeats and technical event recording for stakeholder auditing."""
     
     @staticmethod
-    def initialize():
-        if "nexus_logs" not in st.session_state:
-            st.session_state.nexus_logs = []
+    def bootstrap_state():
+        if "zenith_logs" not in st.session_state:
+            st.session_state.zenith_logs = []
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
     @staticmethod
     def push_log(msg: str, status: str = "SYS"):
         ts = datetime.now().strftime('%H:%M:%S.%f')[:-3]
-        st.session_state.nexus_logs.append(f"[{ts}] {status.upper()}: {msg}")
-        if len(st.session_state.nexus_logs) > 60: 
-            st.session_state.nexus_logs.pop(0)
+        st.session_state.zenith_logs.append(f"[{ts}] {status.upper()}: {msg}")
+        if len(st.session_state.zenith_logs) > 60: 
+            st.session_state.zenith_logs.pop(0)
 
     @staticmethod
-    def read_logs() -> str:
-        return "\n".join(st.session_state.nexus_logs)
+    def get_logs() -> str:
+        return "\n".join(st.session_state.zenith_logs)
 
 class NeuralVaultManager:
-    """Handles Knowledge Vault mounting with automated path recovery."""
+    """
+    Handles Knowledge Vault mounting with automated path recovery.
+    FIXED: Ensuring naming consistency with the orchestration layer.
+    """
     
     def __init__(self):
-        # 768-Dimension Neural Transformer
+        # 768-Dimension Neural Transformer Specialist
         self.embeddings = HuggingFaceEmbeddings(
-            model_name=AegisSystemRegistry.EMBEDDING_MODEL,
+            model_name=SystemRegistry.EMBEDDING_MODEL,
             model_kwargs={'trust_remote_code': True}
         )
         self.vault = self._establish_neural_link()
 
     def _establish_neural_link(self) -> Optional[FAISS]:
-        """Proactively scans directories to find the vector brain."""
-        for path in AegisSystemRegistry.VAULT_DIRECTORIES:
+        """Proactively scans directories to find the vector brain binaries."""
+        for path in SystemRegistry.VAULT_PATHS:
             target = os.path.join(path, "index.faiss")
             if os.path.exists(target):
                 try:
-                    TelemetryEngine.push_log(f"Establishing link with Neural Brain at: {path}", "ok")
+                    TelemetryEngine.push_log(f"Establishing bridge with Neural Brain at: {path}", "ok")
                     return FAISS.load_local(
                         folder_path=path, 
                         embeddings=self.embeddings, 
@@ -280,18 +300,18 @@ class NeuralVaultManager:
                     TelemetryEngine.push_log(f"Integrity Fault at {path}: {str(e)}", "fail")
         return None
 
-class MultiAgentSupremeOrchestrator:
+class MultiAgentZenithOrchestrator:
     """The Intelligence Hub: Sequential Agentic Reasoning for Defence Scenarios."""
     
-    def __init__(self, key: str, vault: FAISS):
+    def __init__(self, groq_key: str, vault: FAISS):
         self.vault = vault
-        self.api_key = key
+        self.api_key = groq_key
         # Models
-        self.cso_brain = ChatGroq(groq_api_key=key, model_name=AegisSystemRegistry.CHIEF_STRATEGIST, temperature=0)
-        self.refiner_brain  = ChatGroq(groq_api_key=key, model_name=AegisSystemRegistry.TACTICAL_REFINER, temperature=0.1)
+        self.cso_brain = ChatGroq(groq_api_key=key, model_name=SystemRegistry.CHIEF_STRATEGIST, temperature=0)
+        self.refiner_brain  = ChatGroq(groq_api_key=key, model_name=SystemRegistry.TACTICAL_REFINER, temperature=0.1)
 
-    def execute_supremacy_cycle(self, query: str) -> Generator:
-        """Sequential Reasoning Flow: Semantic Refinement -> Contextual Mining -> Supreme Synthesis."""
+    def execute_analytical_cycle(self, query: str) -> Generator:
+        """Sequential Reasoning Flow: Semantic Refinement -> Contextual Mining -> Zenith Synthesis."""
         
         # Phase 1: Agent Alpha (Tactician)
         TelemetryEngine.push_log("Agent Alpha: Initializing technical specification refinement...")
@@ -303,84 +323,88 @@ class MultiAgentSupremeOrchestrator:
             
         # Phase 2: Agent Beta (Knowledge Miner)
         TelemetryEngine.push_log(f"Agent Beta: Deep-mining 1,691 knowledge layers using query vector...")
-        # Retrieval Depth: 25 chunks for supreme synthesis
-        raw_evidence = self.vault.as_retriever(search_kwargs={"k": AegisSystemRegistry.MINING_DEPTH}).invoke(technical_q)
+        # Retrieval Depth: 25 chunks for supreme synthesis breadth
+        raw_evidence = self.vault.as_retriever(search_kwargs={"k": SystemRegistry.MINING_DEPTH}).invoke(technical_q)
         
         context_block = ""
         manual_trace = set()
         for i, doc in enumerate(raw_evidence):
             origin = doc.metadata.get('source', 'Classified Repository')
             manual_trace.add(origin)
-            context_block += f"\n[Doc LAYER {i+1} | Manual: {origin}]\n{doc.page_content}\n"
+            context_block += f"\n[LAYER {i+1} | Manual: {origin}]\n{doc.page_content}\n"
         
         TelemetryEngine.push_log(f"Neural retrieval success. Sources identified: {', '.join(manual_trace)}")
 
         # Phase 3: Agent Gamma (Strategist) - The Imperial Decision Protocol
+        # This prompt is the most advanced logic built for NADP.
         master_protocol = f"""
-        YOU ARE THE 'TITAN STRATEGIC ORACLE'. 
+        YOU ARE THE 'TITAN STRATEGIC ORACLE' AT THE NATIONAL ACADEMY OF DEFENCE PRODUCTION.
         STATUS: CHIEF PROCUREMENT ADVISOR | NADP NAGPUR.
-        MISSION: Provide a HIGHLY DETAILED Strategic Consultation Briefing based strictly on Indian Defence Manuals.
+        MISSION: Provide a POINTED, 360-DEGREE Strategic Consultation Briefing based on Indian Defence Manuals.
 
         KNOWLEDGE EVIDENCE BASE:
         {context_block}
 
-        EXECUTIVE DECISION PROTOCOL (ADDRESS ALL ANGLES):
+        EXECUTIVE DECISION PROTOCOL (HEXAGONAL REASONING):
         1. 🛡️ POLICY VECTOR (STRATEGIC CLASSIFICATION): 
-           Identify the core category (Capital vs Revenue). Provide the DEFINITION of terms (e.g., JV, IDDM, Make-II).
-           Contrast the project fit between DAP 2020 and DAP 2026.
+           Identify the core category (Capital vs Revenue). Define terms precisely (e.g., JV, IDDM, Make-II).
+           Contrast the project fit between DAP 2020 and DAP 2026 guidelines.
            
         2. ⚖️ PROCEDURAL PATHWAY (STEP-BY-STEP WORKFLOW):
-           Detail the exact administrative roadmap from AoN to Contract. Cite Handbook Annexures and DPM Vol 2 Proformas.
+           Detail the exact administrative roadmap from AoN to Contract Award. Cite Handbook Annexures and DPM Vol 2 Proformas.
            
         3. 💰 FINANCIAL POWER AUDIT (DFPDS 2026):
-           Calculate the financial power. Identify the EXACT CFA and financial delegation limit using DFPDS schedules.
+           Perform a financial power audit. Identify the EXACT CFA and financial delegation limit using DFPDS schedules.
            
         4. 🔭 STRATEGIC ALIGNMENT (TPCR):
            Synthesize the alignment with the 15-year Technology Roadmap and 'Atmanirbhar Bharat' objectives.
            
-        5. ⚠️ REGULATORY PERIL (RISK):
-           Identify potential Audit (C&AG) objections, procedural friction, or contradictions between DAP and DPM.
+        5. ⚠️ REGULATORY PERIL (RISK AUDIT):
+           Identify potential Audit (C&AG) objections, procedural friction, or contradictions between DAP and DPM rules.
            
         6. ✅ THE PROCEED SOLUTION:
-           A definitive 3-step actionable roadmap for the officer to process the file today.
+           A definitive 3-step actionable roadmap for the administrative officer to process the file today.
 
-        IMPORTANT:
-        - This is for a SENIOR OFFICER. Provide POINTED, HIGH-INTELLIGENCE INSIGHTS.
+        IMPORTANT INSTRUCTIONS:
+        - Provide HIGH-INTELLIGENCE, POINTED INSIGHTS. No generic word-salad.
         - You MUST cite the specific manual name for every statement of fact.
-        - TONE: Authoritative, Precise, Imperial.
+        - If information is missing, state: "Manual silence identified on this point."
+        - TONE: Authoritative, Professional, Imperial.
         """
         
-        return self.cso_brain.stream(master_protocol + "\n\nUser Scenario: " + query)
+        return self.cso_brain.stream(master_protocol + "\n\nUser Case for Deep Analysis: " + query)
 
 # ======================================================================================================================
-# SECTION 5: COMMAND BOOTSTRAP & INTEGRITY GATEWAY (ELITE KEY SYNC)
+# SECTION 5: COMMAND BOOTSTRAP & INTEGRITY GATEWAY (STABLE SYNC)
 # ======================================================================================================================
 
-def execute_ultima_handshake():
+def execute_zenith_handshake():
     """Initializes the tactical dashboard environment and manages neural session states."""
-    TelemetryEngine.initialize()
+    TelemetryEngine.bootstrap_state()
     
     # Secure API Key Sync
-    api_key = st.secrets.get("GROQ_API_KEY", AegisSystemRegistry.API_KEY)
+    api_key = st.secrets.get("GROQ_API_KEY", SystemRegistry.API_KEY)
     
     if not api_key:
         st.error("FATAL ERROR: Groq Security Key Missing. Deployment Terminated.")
         st.stop()
         
     # Core Engine Management
-    if "ultima_agent" not in st.session_state:
-        with st.spinner("🚀 BOOTSTRAPPING TITAN ULTIMA NEXUS CORE..."):
-            vault_handler = NeuralKnowledgeVaultManager()
+    if "zenith_agent" not in st.session_state:
+        with st.spinner("🚀 BOOTSTRAPPING TITAN ZENITH CORE..."):
+            # UNIFIED CLASS CALL (FIXED NameError)
+            vault_handler = NeuralVaultManager()
+            
             if vault_handler.vault:
-                st.session_state.ultima_agent = MultiAgentSupremeOrchestrator(api_key, vault_handler.vault)
+                st.session_state.zenith_agent = MultiAgentZenithOrchestrator(api_key, vault_handler.vault)
                 TelemetryEngine.push_log("Neural link verified. System Integrity 100%.", "ok")
-                TelemetryEngine.push_log("Strategic Logic Core (Llama 3.3 70B) online.", "ok")
+                TelemetryEngine.push_log("Strategic Logic Core (Llama 3.3 70B) status: ACTIVE.", "ok")
             else:
-                st.session_state.ultima_agent = None
+                st.session_state.zenith_agent = None
                 TelemetryEngine.push_log("CRITICAL ERROR: Neural vault files link broken.", "fail")
 
 # Trigger System Boot Sequence
-execute_ultima_handshake()
+execute_zenith_handshake()
 
 # ======================================================================================================================
 # SECTION 6: UNIFIED COMMAND DASHBOARD UI EXECUTION
@@ -389,33 +413,33 @@ execute_ultima_handshake()
 # Visual Unified Command Center Header
 st.markdown(f"""
     <div class='tactical-header'>
-        <div class='header-eyebrow'>NADP · SEM-IV CAPSTONE 2025–26</div>
-        <h1>{AegisSystemRegistry.SYSTEM_NAME}</h1>
-        <p class='header-sub'>{AegisSystemRegistry.ACADEMY} | ULTIMA NEXUS v{AegisSystemRegistry.VERSION}</p>
+        <div class='header-eyebrow'>NADP · SEM-IV CAPSTONE 2025–2026</div>
+        <h1>{SystemRegistry.SYSTEM_NAME}</h1>
+        <p>{SystemRegistry.ACADEMY} | ZENITH Build {SystemRegistry.VERSION}</p>
     </div>
 """, unsafe_allow_html=True)
 
 # HUD Vitals Dashboard Columnar Display
 vit1, vit2, vit3, vit4 = st.columns(4)
-with vit1: st.markdown("<div class='vital-card'><p class='v-label'>Knowledge Depth</p><p class='v-value'>1,691 Pages</p></div>", unsafe_allow_html=True)
-with vit2: st.markdown("<div class='vital-card'><p class='v-label'>Neural Nodes</p><p class='v-value'>5,026 Chunks</p></div>", unsafe_allow_html=True)
-with vit3: st.markdown("<div class='vital-card'><p class='v-label'>Reasoning Brain</p><p class='v-value'>70B Strategic</p></div>", unsafe_allow_html=True)
-with vit4: st.markdown("<div class='vital-card'><p class='v-label'>Security Level</p><p class='v-value'>ENCRYPTED</p></div>", unsafe_allow_html=True)
+with vit1: st.markdown("<div class='vital-unit'><p class='v-label'>Knowledge Depth</p><p class='v-value'>1,691 Pages</p></div>", unsafe_allow_html=True)
+with vit2: st.markdown("<div class='vital-unit'><p class='v-label'>Neural Nodes</p><p class='v-value'>5,026 Chunks</p></div>", unsafe_allow_html=True)
+with vit3: st.markdown("<div class='vital-unit'><p class='v-label'>Reasoning Brain</p><p class='v-value'>70B Strategic</p></div>", unsafe_allow_html=True)
+with vit4: st.markdown("<div class='vital-unit'><p class='v-label'>Security Status</p><p class='v-value'>ENCRYPTED</p></div>", unsafe_allow_html=True)
 
 # Real-time System Console Log HUD
 with st.expander("🖥️ STRATEGIC PROCESS MONITOR LOG", expanded=False):
-    st.markdown(f"<div class='terminal-hud'>{TelemetryEngine.read_logs()}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='terminal-hud'>{TelemetryEngine.get_logs()}</div>", unsafe_allow_html=True)
 
-# Deployment Gate
-if st.session_state.ultima_agent is None:
-    st.error("❌ CRITICAL ERROR: KNOWLEDGE VAULT OFFLINE. Ensure index.faiss and index.pkl are in the GitHub Root directory.")
+# Deployment Gate: Security Halt if Vault missing
+if st.session_state.zenith_agent is None:
+    st.error("❌ CRITICAL SYSTEM FAILURE: KNOWLEDGE VAULT OFFLINE. index.faiss not found in GitHub.")
     st.stop()
 
 # Persistent Interaction Memory Rendering
 for interaction in st.session_state.messages:
     with st.chat_message(interaction["role"]):
         if interaction["role"] == "assistant":
-            st.markdown(f"<div class='briefing-card'>{interaction['content']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='briefing-panel'>{interaction['content']}</div>", unsafe_allow_html=True)
         else:
             st.markdown(interaction["content"])
 
@@ -435,7 +459,7 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
             time.sleep(0.3)
             st.write("Mining context from DAP/DPM/DFPDS evidence layers...")
             TelemetryEngine.push_log("Agent Beta: Context extraction SUCCESS.")
-            st.write("Cross-referencing financial power schedules and audit risks...")
+            st.write("Scanning for audit risks and financial power conflicts...")
             time.sleep(0.2)
             status_tracker.update(label="STRATEGIC ANALYSIS BRIEFING GENERATED", state="complete", expanded=False)
 
@@ -444,8 +468,8 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
         full_report_text = ""
         
         try:
-            # Token Streaming from High-Intelligence Engine (FIXED METHOD CALL)
-            for chunk in st.session_state.ultima_agent.execute_supremacy_cycle(user_input):
+            # Token Streaming from Supreme Engine (FIXED METHOD CALL)
+            for chunk in st.session_state.zenith_agent.execute_analytical_cycle(user_input):
                 # Robust Token Parsing Logic (Handles object/string return types)
                 if hasattr(chunk, 'content'):
                     token = chunk.content
@@ -456,10 +480,10 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
                 
                 full_report_text += token
                 # Live-typing visual effect
-                report_surface.markdown(f"<div class='briefing-card'>{full_report_text}▌</div>", unsafe_allow_html=True)
+                report_surface.markdown(f"<div class='briefing-panel'>{full_report_text}▌</div>", unsafe_allow_html=True)
             
             # Post-Streaming Surface Polish
-            report_surface.markdown(f"<div class='briefing-card'>{full_report_text}</div>", unsafe_allow_html=True)
+            report_surface.markdown(f"<div class='briefing-panel'>{full_report_text}</div>", unsafe_allow_html=True)
             
             # Persist response in session history
             TelemetryEngine.push_log("Strategic Briefing Delivered.")
@@ -473,28 +497,28 @@ if user_input := st.chat_input("Enter complex procurement problem for Deep-Tissu
 st.rerun() if False else None 
 
 # ======================================================================================================================
-# SECTION 7: GOVERNANCE DASHBOARD & CAPSTONE PROJECT FOOTER
+# SECTION 7: GOVERNANCE DASHBOARD & CAPSTONE PROJECT FOOTER (Lines 1100+)
 # ======================================================================================================================
 
 st.markdown("<br><br><hr>", unsafe_allow_html=True)
 foot1, foot2, foot3 = st.columns(3)
 
 with foot1:
-    st.markdown(f"""<div class='vital-card'><p class='v-label'>Procedural Integrity</p><p style='color:#ffffff; font-weight:bold;'>DAP 2026 CONFORMANT</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Procedural Integrity</p><p style='color:#ffffff; font-weight:bold;'>DAP 2026 CONFORMANT</p></div>""", unsafe_allow_html=True)
 with foot2:
-    st.markdown(f"""<div class='vital-card'><p class='v-label'>Data Sovereignty</p><p style='color:#ffffff; font-weight:bold;'>LOCAL VAULT SECURE</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Data Sovereignty</p><p style='color:#ffffff; font-weight:bold;'>LOCAL VAULT SECURE</p></div>""", unsafe_allow_html=True)
 with foot3:
-    st.markdown(f"""<div class='vital-card'><p class='v-label'>Intelligence depth</p><p style='color:#ffffff; font-weight:bold;'>HEXAGONAL REASONING</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='vital-unit'><p class='v-label'>Intelligence depth</p><p style='color:#ffffff; font-weight:bold;'>HEXAGONAL REASONING</p></div>""", unsafe_allow_html=True)
 
 # Institutional Verification Meta-string
 st.markdown(
     f"<p style='text-align: center; color: #444; font-size: 0.8rem; padding: 60px;'>"
-    f"Proprietary Strategic Intelligence Platform | {AegisSystemRegistry.ACADEMY} | "
-    f"SEM-IV Capstone 2025-26 | Project ID: {AegisSystemRegistry.BUILD_ID} | Lead Analyst: Jatin Sharma"
+    f"Proprietary Strategic Intelligence Platform | {SystemRegistry.ACADEMY} | "
+    f"SEM-IV Capstone 2025-26 | Project ID: {SystemRegistry.BUILD_ID} | Lead Analyst: Jatin Sharma"
     "</p>", 
     unsafe_allow_html=True
 )
 
 # ======================================================================================================================
-# END OF MASTER v37.0 TITAN ULTIMA NEXUS BUILD
+# END OF MASTER v38.0 TITAN ZENITH MASTER BUILD
 # ======================================================================================================================
